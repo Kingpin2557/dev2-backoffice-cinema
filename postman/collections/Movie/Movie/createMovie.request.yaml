@@ -1,6 +1,6 @@
 $kind: http-request
-name: New Request
-url: "{{baseUrl}}/movie"
+name: createMovie
+url: '{{baseUrl}}{{path}}'
 method: POST
 headers:
   Content-Type: application/json
@@ -24,4 +24,4 @@ body:
     \      \"durationMinutes\": \"133\"\r
 
     \    }"
-order: 3619877610376283
+order: 4125287268007561

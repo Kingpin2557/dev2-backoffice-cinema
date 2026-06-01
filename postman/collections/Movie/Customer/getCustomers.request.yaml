@@ -1,0 +1,5 @@
+$kind: http-request
+name: getCustomers
+url: '{{baseUrl}}{{path}}'
+method: GET
+order: 1780328287680

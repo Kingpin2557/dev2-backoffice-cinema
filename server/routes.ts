@@ -8,11 +8,11 @@ import {
 
 const router = express.Router();
 
-router.get("/movies", getMovies);
+router.get("/movie", getMovies);
 router.get("/movie/:id", getMovieById);
 router.post("/movie", createMovie);
 
-router.get("/customers", getCustomers);
+router.get("/customer", getCustomers);
 router.get("/customer/:id", getCustomerById);
 router.post("/customer", createCustomer);
 

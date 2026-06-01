@@ -1,0 +1,4 @@
+$kind: collection
+variables:
+  - key: path
+    value: /movie
