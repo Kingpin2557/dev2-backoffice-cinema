@@ -3,10 +3,10 @@ import type { Request, Response } from "express";
 import { customerById } from "../../services/customerService";
 
 export const getCustomerById = async (
-  req: Request,
+  _req: Request,
   res: Response,
 ): Promise<void> => {
-  const movie = await customerById(req.params.id as string);
+  const movie = await customerById(res.locals.numericId as string);
 
   if (!movie) {
     res.status(404).json({ error: "Movie not found" });

@@ -1,3 +1,3 @@
-export { getMovies } from "./getmovies";
-export { getMovieById } from "./getmoviebyid";
-export { createMovie } from "./createmovie";
+export { getMovies } from "./getMovies";
+export { getMovieById } from "./getMovieById";
+export { createMovie } from "./createMovie";

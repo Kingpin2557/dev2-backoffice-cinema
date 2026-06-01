@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import { customers } from "../../services/customerService";
 
 export const getCustomers = async (
-  req: Request,
+  _req: Request,
   res: Response,
 ): Promise<void> => {
   const movie = await customers();

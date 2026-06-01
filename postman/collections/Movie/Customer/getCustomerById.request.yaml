@@ -1,5 +1,5 @@
 $kind: http-request
 name: getCustomerById
-url: "{{baseUrl}}{{path}}/2"
+url: "{{baseUrl}}{{path}}/3"
 method: GET
 order: 2161764161757527

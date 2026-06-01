@@ -1,3 +1,3 @@
-export { getCustomers } from "./getcustomers";
-export { getCustomerById } from "./getcustomerbyid";
-export { createCustomer } from "./createcustomer";
+export { getCustomers } from "./getCustomers";
+export { getCustomerById } from "./getCustomerById";
+export { createCustomer } from "./createCustomer";
