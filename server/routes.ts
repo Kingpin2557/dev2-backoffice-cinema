@@ -5,6 +5,7 @@ import {
   getCustomerById,
   createCustomer,
 } from "./controllers/customers";
+import { getTickets, getTicketById, createTicket } from "./controllers/tickets";
 
 import { idValidation } from "./middleware/idValidation";
 
@@ -17,5 +18,9 @@ router.post("/movie", createMovie);
 router.get("/customer", getCustomers);
 router.get("/customer/:id", idValidation, getCustomerById);
 router.post("/customer", createCustomer);
+
+router.get("/ticket", getTickets);
+router.get("/ticket/:id", idValidation, getTicketById);
+router.post("/ticket", createTicket);
 
 export default router;

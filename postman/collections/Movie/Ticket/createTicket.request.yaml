@@ -1,0 +1,24 @@
+$kind: http-request
+name: createTicket
+url: "{{baseUrl}}{{path}}"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \    \"customerId\": 14,\r
+
+    \    \"seatId\": 32,\r
+
+    \    \"showtimeId\": 16,\r
+
+    \    \"purchaseDate\": \"2026-06-01 14:25:30\",\r
+
+    \    \"price\": 10,\r
+
+    \    \"type\": \"student\"\r
+
+    }"
+order: 4482390517755637

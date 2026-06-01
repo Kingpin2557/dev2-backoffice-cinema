@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 
 import { customerCreate } from "../../services/customerService";
-import { Customer } from "../../models/customer";
+import { Customer } from "../../services/customerService";
 
 export const createCustomer = async (
   req: Request,

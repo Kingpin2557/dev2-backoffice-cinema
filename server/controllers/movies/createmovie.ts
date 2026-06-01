@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { type Movie } from "../../models/movie";
+import { type Movie } from "../../services/moviesService";
 
 import { movieCreate } from "../../services/moviesService";
 

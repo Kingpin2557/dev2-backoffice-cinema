@@ -1,0 +1,5 @@
+$kind: http-request
+name: getTicketById
+url: "{{baseUrl}}{{path}}"
+method: GET
+order: 4024375633581481

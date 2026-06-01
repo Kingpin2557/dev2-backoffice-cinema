@@ -1,18 +1,32 @@
-import { type Customer } from "../models/customer";
+import sql from "../config/db";
 
-import { customerQueries } from "../data/customers";
+export interface Customer {
+  id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  phonenumber: string;
+}
 
 export async function customers(): Promise<Customer[]> {
-  const data: Customer[] = await customerQueries.queryAll();
+  const data: Customer[] = await sql<Customer[]>`SELECT * FROM "Customer"`;
   return data ?? null;
 }
 
-export async function customerById(slug: string): Promise<Customer> {
-  const data: Customer[] = await customerQueries.queryById(slug);
+export async function customerById(id: string): Promise<Customer> {
+  const data: Customer[] = await sql<Customer[]>`
+    SELECT * FROM "Customer" WHERE id = ${id} LIMIT 1
+  `;
   return data[0] ?? null;
 }
 
 export async function customerCreate(customer: Customer): Promise<Customer> {
-  const data: Customer[] = await customerQueries.create(customer);
+  const { firstname, lastname, email, phonenumber } = customer;
+
+  const data: Customer[] = await sql<
+    Customer[]
+  >`INSERT INTO "Customer" ("firstname", "lastname", "email", "phonenumber")
+         VALUES (${firstname}, ${lastname}, ${email}, ${phonenumber})
+         RETURNING *`;
   return data[0] ?? null;
 }

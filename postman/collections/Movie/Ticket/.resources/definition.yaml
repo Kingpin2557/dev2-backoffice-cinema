@@ -1,0 +1,6 @@
+$kind: collection
+name: Ticket
+scripts:
+  - type: http:beforeRequest
+    code: pm.collectionVariables.set("path", "/ticket");
+order: 2833796238934015
