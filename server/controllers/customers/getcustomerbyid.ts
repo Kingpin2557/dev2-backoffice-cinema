@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 
 import { movieById } from "../../services/moviesService";
 
-export const getMovieById = async (
+export const getCustomerById = async (
   req: Request,
   res: Response,
 ): Promise<void> => {

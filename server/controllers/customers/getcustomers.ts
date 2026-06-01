@@ -1,12 +1,11 @@
 import type { Request, Response } from "express";
+import { customers } from "../../services/customerService";
 
-import { movieById } from "../../services/moviesService";
-
-export const getMovieById = async (
+export const getCustomers = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const movie = await movieById(req.params.id as string);
+  const movie = await customers();
 
   if (!movie) {
     res.status(404).json({ error: "Movie not found" });

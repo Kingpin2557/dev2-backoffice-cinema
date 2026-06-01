@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { movieCreate } from "../../services/moviesService";
 import { type Movie } from "../../models/movie";
 

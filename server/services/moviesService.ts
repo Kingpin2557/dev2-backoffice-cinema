@@ -1,5 +1,5 @@
-import { movieQueries } from "./queries";
 import { type Movie } from "../models/movie";
+import { movieQueries } from "./queries";
 
 export async function movies(): Promise<Movie[] | null> {
   const data: Movie[] = await movieQueries.queryAll();

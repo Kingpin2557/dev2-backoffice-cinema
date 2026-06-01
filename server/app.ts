@@ -10,5 +10,5 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", routes);
 
 app.listen(PORT, () => {
-  console.log(`Server draait op http://localhost:${PORT}/api`);
+  console.log(`Server draait op http://localhost:${PORT}/api/movies`);
 });
