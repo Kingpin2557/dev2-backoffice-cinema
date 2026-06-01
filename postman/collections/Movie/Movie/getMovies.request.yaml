@@ -1,5 +1,5 @@
 $kind: http-request
 name: getMovies
-url: '{{baseUrl}}{{path}}'
+url: "{{baseUrl}}{{path}}"
 method: GET
 order: 1780328267146

@@ -1,4 +1,6 @@
 $kind: collection
-variables:
-  - key: path
-    value: /customer
+name: Customer
+scripts:
+  - type: http:beforeRequest
+    code: pm.collectionVariables.set("path", "/customer");
+    language: text/javascript

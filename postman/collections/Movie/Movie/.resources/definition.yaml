@@ -1,4 +1,6 @@
 $kind: collection
-variables:
-  - key: path
-    value: /movie
+name: Movie
+scripts:
+  - type: http:beforeRequest
+    code: pm.collectionVariables.set("path", "/movie");
+    language: text/javascript

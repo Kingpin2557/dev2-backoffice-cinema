@@ -1,4 +1,4 @@
 $kind: collection
 name: Cinema backoffice API
 variables:
-  collection: ""
+  path: ""

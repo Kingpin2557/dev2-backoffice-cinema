@@ -1,6 +1,6 @@
 $kind: http-request
 name: createMovie
-url: '{{baseUrl}}{{path}}'
+url: "{{baseUrl}}{{path}}"
 method: POST
 headers:
   Content-Type: application/json
@@ -8,18 +8,13 @@ body:
   type: json
   content: "    {\r
 
-    \      \"title\": \"sdadaddaddsads\",\r
+    \      \"title\": \"sdadaddaddsadsdfsfds\",\r
 
-    \      \"posterUrl\":
-    \"https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=500\",\r
+    \      \"posterUrl\": \"https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=500\",\r
 
-    \      \"trailerUrl\":
-    \"https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=500\",\r
+    \      \"trailerUrl\": \"https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=500\",\r
 
-    \      \"description\": \"The young daughter of a journalist disappears into
-    the desert without a trace—eight years later, the broken family is shocked
-    when she is returned to them, as what should be a joyful reunion turns into
-    a living nightmare.\",\r
+    \      \"description\": \"The young daughter of a journalist disappears into the desert without a trace—eight years later, the broken family is shocked when she is returned to them, as what should be a joyful reunion turns into a living nightmare.\",\r
 
     \      \"durationMinutes\": \"133\"\r
 
