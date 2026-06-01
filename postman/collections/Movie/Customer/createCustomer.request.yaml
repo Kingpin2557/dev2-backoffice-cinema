@@ -1,0 +1,13 @@
+$kind: http-request
+name: createCustomer
+url: ""
+method: POST
+headers:
+  Content-Type: application/json
+queryParams:
+  - key: ""
+    value: ""
+    disabled: true
+body:
+  type: urlencoded
+order: 4140169809964064
