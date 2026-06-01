@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+
 import { customerById } from "../../services/customerService";
 
 export const getCustomerById = async (

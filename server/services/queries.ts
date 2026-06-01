@@ -1,4 +1,5 @@
 import sql from "../config/db";
+
 import type { Customer } from "../models/customer";
 import type { Movie } from "../models/movie";
 

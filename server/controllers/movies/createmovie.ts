@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
-import { movieCreate } from "../../services/moviesService";
 import { type Movie } from "../../models/movie";
+
+import { movieCreate } from "../../services/moviesService";
 
 export const createMovie = async (
   req: Request,

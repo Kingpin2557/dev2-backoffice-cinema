@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+
 import { customers } from "../../services/customerService";
 
 export const getCustomers = async (
