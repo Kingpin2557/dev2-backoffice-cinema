@@ -1,0 +1,32 @@
+{
+  "name": "dev2-backoffice-cinema",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --ext ts --exec ts-node ./server/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kingpin2557/dev2-backoffice-cinema.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kingpin2557/dev2-backoffice-cinema/issues"
+  },
+  "homepage": "https://github.com/Kingpin2557/dev2-backoffice-cinema#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
