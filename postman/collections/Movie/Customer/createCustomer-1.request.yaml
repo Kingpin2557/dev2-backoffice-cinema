@@ -1,0 +1,20 @@
+$kind: http-request
+name: createCustomer
+url: "{{baseUrl}}{{path}}"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \  \"firstname\": \"Jules\",\r
+
+    \  \"lastname\": \"Van der Meulen\",\r
+
+    \  \"email\": \"jules.vandermeulen@example.com\",\r
+
+    \  \"phonenumber\": \"+32 478 91 00 37\"\r
+
+    }\r\n"
+order: 4236065632202133

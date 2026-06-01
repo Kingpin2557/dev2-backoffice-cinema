@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+
 import { movies } from "../../services/moviesService";
 
 export const getMovies = async (

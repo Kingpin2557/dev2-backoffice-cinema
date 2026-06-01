@@ -1,5 +1,5 @@
 $kind: http-request
 name: getMovieById
-url: '{{baseUrl}}{{path}}/1'
+url: "{{baseUrl}}{{path}}/30"
 method: GET
 order: 744938987159267

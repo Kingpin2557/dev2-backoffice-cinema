@@ -1,5 +1,6 @@
 import { type Customer } from "../models/customer";
-import { customerQueries } from "./queries";
+
+import { customerQueries } from "../data/customers";
 
 export async function customers(): Promise<Customer[] | null> {
   const data: Customer[] = await customerQueries.queryAll();
