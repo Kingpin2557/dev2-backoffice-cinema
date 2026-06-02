@@ -1,0 +1,14 @@
+$kind: http-request
+name: updateMovie
+url: "{{baseUrl}}{{path}}/55"
+method: PATCH
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"The Corrected Movie Title\"\r
+
+    }"
+order: 4465883571713953

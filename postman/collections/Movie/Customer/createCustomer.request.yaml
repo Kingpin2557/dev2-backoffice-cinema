@@ -1,6 +1,6 @@
 $kind: http-request
 name: createCustomer
-url: ""
+url: '{{baseUrl}}{{path}}'
 method: POST
 headers:
   Content-Type: application/json

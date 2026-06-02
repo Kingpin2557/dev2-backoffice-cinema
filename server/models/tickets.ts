@@ -1,4 +1,4 @@
-import type { Model } from "./main";
+import type { Model } from "./shared";
 
 export interface TicketProto extends Record<string, unknown> {
   customerId: number;
@@ -6,6 +6,7 @@ export interface TicketProto extends Record<string, unknown> {
   showtimeId: number;
   purchaseDate: Date;
   price: number;
+  type: "cosy" | "adult" | "child" | "student";
 }
 
 export interface Ticket extends TicketProto {

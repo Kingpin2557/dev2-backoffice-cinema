@@ -33,11 +33,12 @@ export const ticketQueries: TicketModel = {
     const result = await sql<Ticket[]>`
         UPDATE "Ticket"
         SET
-          customerId = COALESCE(${payload.customerId ?? null}, customerId),
+          "customerId" = COALESCE(${payload.customerId ?? null}, "customerId"),
           "seatId" = COALESCE(${payload.seatId ?? null}, "seatId"),
           "showtimeId" = COALESCE(${payload.showtimeId ?? null}, "showtimeId"),
-          purchaseDate = COALESCE(${payload.purchaseDate ?? null}, purchaseDate),
-          "price" = COALESCE(${payload.price ?? null}, "price")
+          "purchaseDate" = COALESCE(${payload.purchaseDate ?? null}, "purchaseDate"),
+          "price" = COALESCE(${payload.price ?? null}, "price"),
+          "type" = COALESCE(${payload.type ?? null}, "type")
         WHERE id = ${id}
         RETURNING *
       `;
@@ -45,10 +46,11 @@ export const ticketQueries: TicketModel = {
     return result[0] ?? null;
   },
 
-  async delete(id: number): Promise<boolean> {
-    const result = await sql`
-      DELETE FROM "Ticket" WHERE id = ${id}
-    `;
-    return result.count > 0;
+  async delete(id: number): Promise<Ticket | null> {
+    const result = await sql<Ticket[]>`
+        DELETE FROM "Ticket" WHERE id = ${id}
+        RETURNING *
+      `;
+    return result[0] ?? null;
   },
 };

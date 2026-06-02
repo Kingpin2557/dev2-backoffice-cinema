@@ -1,0 +1,10 @@
+$kind: http-request
+name: updateTicket
+url: "{{baseUrl}}{{path}}/28"
+method: PATCH
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r\n    \"type\": \"child\"\r\n}"
+order: 4495368896387340

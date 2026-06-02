@@ -40,7 +40,7 @@ export const customerQueries: CustomerModel = {
           firstname = COALESCE(${payload.firstname ?? null}, firstname),
           "lastname" = COALESCE(${payload.lastname ?? null}, "lastname"),
           "email" = COALESCE(${payload.email ?? null}, "email"),
-          phonenumber = COALESCE(${payload.phonenumber ?? null}, phonenumber),
+          phonenumber = COALESCE(${payload.phonenumber ?? null}, phonenumber)
         WHERE id = ${id}
         RETURNING *
       `;
@@ -48,10 +48,11 @@ export const customerQueries: CustomerModel = {
     return result[0] ?? null;
   },
 
-  async delete(id: number): Promise<boolean> {
-    const result = await sql`
-      DELETE FROM "Customer" WHERE id = ${id}
-    `;
-    return result.count > 0;
+  async delete(id: number): Promise<Customer | null> {
+    const result = await sql<Customer[]>`
+        DELETE FROM "Customer" WHERE id = ${id}
+        RETURNING *
+      `;
+    return result[0] ?? null;
   },
 };

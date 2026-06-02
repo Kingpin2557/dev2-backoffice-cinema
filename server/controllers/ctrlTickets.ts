@@ -34,3 +34,28 @@ export const createTicket = async (
 
   res.status(201).json(created);
 };
+
+export const deleteTicket = async (
+  _req: Request,
+  res: Response,
+): Promise<void> => {
+  const deleted = await ticketQueries.delete(res.locals.numericId);
+
+  res.status(201).json(deleted);
+};
+
+export const updateTicket = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const updated = await ticketQueries.update({
+    ...(req.body as Partial<Ticket>),
+    id: res.locals.numericId,
+  });
+
+  if (!updated) {
+    res.status(404).json({ error: "Ticket not found to update" });
+    return;
+  }
+  res.status(200).json(updated);
+};

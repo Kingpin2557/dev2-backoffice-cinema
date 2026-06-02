@@ -38,3 +38,28 @@ export const createCustomer = async (
 
   res.status(201).json(created);
 };
+
+export const deleteCustomer = async (
+  _req: Request,
+  res: Response,
+): Promise<void> => {
+  const deleted = await customerQueries.delete(res.locals.numericId);
+
+  res.status(201).json(deleted);
+};
+
+export const updateCustomer = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const updated = await customerQueries.update({
+    ...(req.body as Partial<Customer>),
+    id: res.locals.numericId,
+  });
+
+  if (!updated) {
+    res.status(404).json({ error: "Customer not found to update" });
+    return;
+  }
+  res.status(200).json(updated);
+};

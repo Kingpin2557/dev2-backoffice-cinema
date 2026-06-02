@@ -1,4 +1,4 @@
-import type { Model } from "./main";
+import type { Model } from "./shared";
 
 export interface CustomerProto extends Record<string, unknown> {
   firstname: string;

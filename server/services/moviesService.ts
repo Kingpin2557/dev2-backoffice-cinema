@@ -44,11 +44,13 @@ export const movieQueries: MovieModel = {
 
     return result[0] ?? null;
   },
-  async delete(id: number): Promise<boolean> {
-    const result = await sql`
-      DELETE FROM "Movie" WHERE id = ${id}
-    `;
-    return result.count > 0;
+
+  async delete(id: number): Promise<Movie | null> {
+    const result = await sql<Movie[]>`
+        DELETE FROM "Movie" WHERE id = ${id}
+        RETURNING *
+      `;
+    return result[0] ?? null;
   },
 
   async getByDuration(duration: number): Promise<Movie[]> {

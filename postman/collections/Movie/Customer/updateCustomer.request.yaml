@@ -1,0 +1,14 @@
+$kind: http-request
+name: updateCustomer
+url: "{{baseUrl}}{{path}}/34"
+method: PATCH
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \    \"firstname\": \"random name\"\r
+
+    }"
+order: 4490904406965464
