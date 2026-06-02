@@ -47,6 +47,7 @@ export const customerQueries: CustomerModel = {
 
     return result[0] ?? null;
   },
+
   async delete(id: number): Promise<boolean> {
     const result = await sql`
       DELETE FROM "Customer" WHERE id = ${id}

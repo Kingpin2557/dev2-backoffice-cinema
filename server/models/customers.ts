@@ -1,4 +1,4 @@
-import type { Model } from "../routes";
+import type { Model } from "./main";
 
 export interface CustomerProto extends Record<string, unknown> {
   firstname: string;

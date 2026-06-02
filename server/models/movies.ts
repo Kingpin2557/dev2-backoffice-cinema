@@ -1,4 +1,4 @@
-import type { Model } from "../routes";
+import type { Model } from "./main";
 
 export interface MovieProto extends Record<string, unknown> {
   title: string;
