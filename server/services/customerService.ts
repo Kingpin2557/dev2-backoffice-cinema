@@ -1,32 +1,56 @@
 import sql from "../config/db";
+import type {
+  CustomerModel,
+  Customer,
+  CustomerProto,
+} from "../models/customers";
 
-export interface Customer {
-  id: number;
-  firstname: string;
-  lastname: string;
-  email: string;
-  phonenumber: string;
-}
+export const customerQueries: CustomerModel = {
+  async getAll(): Promise<Customer[]> {
+    const data = await sql<Customer[]>`
+      SELECT * FROM "Customer"
+    `;
+    return data ?? [];
+  },
 
-export async function customers(): Promise<Customer[]> {
-  const data: Customer[] = await sql<Customer[]>`SELECT * FROM "Customer"`;
-  return data ?? null;
-}
+  async get(id: number): Promise<Customer | null> {
+    const data = await sql<Customer[]>`
+      SELECT * FROM "Customer" WHERE id = ${id}
+    `;
+    return data[0] ?? null;
+  },
 
-export async function customerById(id: string): Promise<Customer> {
-  const data: Customer[] = await sql<Customer[]>`
-    SELECT * FROM "Customer" WHERE id = ${id} LIMIT 1
-  `;
-  return data[0] ?? null;
-}
+  async create(data: CustomerProto): Promise<Customer> {
+    const [newCustomer] = await sql<Customer[]>`
+      INSERT INTO "Customer" (firstname, "lastname", "email", phonenumber)
+      VALUES (${data.firstname}, ${data.lastname}, ${data.email}, ${data.phonenumber})
+      RETURNING *
+    `;
+    return newCustomer;
+  },
 
-export async function customerCreate(customer: Customer): Promise<Customer> {
-  const { firstname, lastname, email, phonenumber } = customer;
+  async update(
+    data: Partial<CustomerProto> & { id: number },
+  ): Promise<Customer | null> {
+    const { id, ...payload } = data;
 
-  const data: Customer[] = await sql<
-    Customer[]
-  >`INSERT INTO "Customer" ("firstname", "lastname", "email", "phonenumber")
-         VALUES (${firstname}, ${lastname}, ${email}, ${phonenumber})
-         RETURNING *`;
-  return data[0] ?? null;
-}
+    const result = await sql<Customer[]>`
+        UPDATE "Customer"
+        SET
+          firstname = COALESCE(${payload.firstname ?? null}, firstname),
+          "lastname" = COALESCE(${payload.lastname ?? null}, "lastname"),
+          "email" = COALESCE(${payload.email ?? null}, "email"),
+          phonenumber = COALESCE(${payload.phonenumber ?? null}, phonenumber),
+        WHERE id = ${id}
+        RETURNING *
+      `;
+
+    return result[0] ?? null;
+  },
+  async delete(id: number): Promise<boolean> {
+    const result = await sql`
+      DELETE FROM "Customer" WHERE id = ${id}
+    `;
+    return result.count > 0;
+  },
+};
