@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import type { Customer } from "../models/customers";
-import { io } from "../app";
 
 import { customerQueries } from "../services/customerService";
 
@@ -57,7 +56,6 @@ export const createCustomer = async (
 
     const created = await customerQueries.create(customer);
 
-    io.emit("customer:created", created);
     res.status(201).json(created);
   } catch (err) {
     console.error("Failed to create customer:", err);
@@ -77,7 +75,6 @@ export const deleteCustomer = async (
       return;
     }
 
-    io.emit("customer:deleted", deleted);
     res.status(200).json(deleted);
   } catch (err) {
     console.error(
@@ -103,7 +100,6 @@ export const updateCustomer = async (
       return;
     }
 
-    io.emit("customer:updated", updated);
     res.status(200).json(updated);
   } catch (err) {
     console.error(
