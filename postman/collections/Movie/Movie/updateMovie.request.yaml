@@ -1,6 +1,6 @@
 $kind: http-request
 name: updateMovie
-url: "{{baseUrl}}{{path}}/55"
+url: "{{baseUrl}}{{path}}/30"
 method: PATCH
 headers:
   Content-Type: application/json
@@ -8,7 +8,7 @@ body:
   type: json
   content: "{\r
 
-    \  \"title\": \"The Corrected Movie Title\"\r
+    \  \"title\": \"The Corrected Movie Title asdad\"\r
 
     }"
 order: 4465883571713953

@@ -7,59 +7,104 @@ export const getCustomers = async (
   _req: Request,
   res: Response,
 ): Promise<void> => {
-  const movie = await customerQueries.getAll();
+  try {
+    const customers = await customerQueries.getAll();
 
-  if (!movie) {
-    res.status(404).json({ error: "Movie not found" });
-    return;
+    if (!customers || customers.length === 0) {
+      res.status(404).json({ error: "Cusomters not found" });
+      return;
+    }
+    res.status(200).json(customers);
+  } catch (err) {
+    console.error("Failed to fetch customers:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
-  res.status(200).json(movie);
 };
 
 export const getCustomerById = async (
   _req: Request,
   res: Response,
 ): Promise<void> => {
-  const movie = await customerQueries.get(res.locals.numericId);
+  try {
+    const customer = await customerQueries.get(res.locals.numericId);
 
-  if (!movie) {
-    res.status(404).json({ error: "Movie not found" });
-    return;
+    if (!customer) {
+      res.status(404).json({ error: "Customer with not found" });
+      return;
+    }
+    res.status(200).json(customer);
+  } catch (err) {
+    console.error(
+      `Failed to fetch customer with id: ${res.locals.numericId}`,
+      err,
+    );
+    res.status(500).json({ error: "Internal server error" });
   }
-  res.status(200).json(movie);
 };
 
 export const createCustomer = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const customer = req.body as Customer;
-  const created = await customerQueries.create(customer);
+  try {
+    const customer = req.body as Customer;
 
-  res.status(201).json(created);
+    if (!customer) {
+      res.status(400).json({ error: "Invalid request body" });
+      return;
+    }
+
+    const created = await customerQueries.create(customer);
+    res.status(201).json(created);
+  } catch (err) {
+    console.error("Failed to create customer:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const deleteCustomer = async (
-  _req: Request,
+  req: Request,
   res: Response,
 ): Promise<void> => {
-  const deleted = await customerQueries.delete(res.locals.numericId);
+  try {
+    const deleted = await customerQueries.delete(res.locals.numericId);
 
-  res.status(201).json(deleted);
+    if (!deleted) {
+      res.status(404).json({ error: "Customer not found" });
+      return;
+    }
+
+    res.status(200).json(deleted);
+  } catch (err) {
+    console.error(
+      `Failed to delete customer with id: ${res.locals.numericId}`,
+      err,
+    );
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const updateCustomer = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const updated = await customerQueries.update({
-    ...(req.body as Partial<Customer>),
-    id: res.locals.numericId,
-  });
+  try {
+    const updated = await customerQueries.update({
+      ...(req.body as Partial<Customer>),
+      id: res.locals.numericId,
+    });
 
-  if (!updated) {
-    res.status(404).json({ error: "Customer not found to update" });
-    return;
+    if (!updated) {
+      res.status(404).json({ error: "Customer not found" });
+      return;
+    }
+
+    res.status(200).json(updated);
+  } catch (err) {
+    console.error(
+      `Failed to update customer with id: ${res.locals.numericId}`,
+      err,
+    );
+    res.status(500).json({ error: "Internal server error" });
   }
-  res.status(200).json(updated);
 };

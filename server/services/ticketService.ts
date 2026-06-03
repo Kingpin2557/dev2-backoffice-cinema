@@ -18,7 +18,7 @@ export const ticketQueries: TicketModel = {
 
   async create(data: TicketProto): Promise<Ticket> {
     const [newTicket] = await sql<Ticket[]>`
-      INSERT INTO "Ticket" (customerId, "seatId", "showtimeId", purchaseDate, "price")
+      INSERT INTO "Ticket" ("customerId", "seatId", "showtimeId", "purchaseDate", "price")
       VALUES (${data.customerId}, ${data.seatId}, ${data.showtimeId}, ${data.purchaseDate}, ${data.price})
       RETURNING *
     `;

@@ -33,10 +33,10 @@ export const movieQueries: MovieModel = {
     const result = await sql<Movie[]>`
         UPDATE "Movie"
         SET
-          title = COALESCE(${payload.title ?? null}, title),
+          "title" = COALESCE(${payload.title ?? null}, "title"),
           "posterUrl" = COALESCE(${payload.posterUrl ?? null}, "posterUrl"),
           "trailerUrl" = COALESCE(${payload.trailerUrl ?? null}, "trailerUrl"),
-          description = COALESCE(${payload.description ?? null}, description),
+          "description" = COALESCE(${payload.description ?? null}, "description"),
           "durationMinutes" = COALESCE(${payload.durationMinutes ?? null}, "durationMinutes")
         WHERE id = ${id}
         RETURNING *

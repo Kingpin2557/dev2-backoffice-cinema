@@ -7,55 +7,107 @@ export const getTickets = async (
   _req: Request,
   res: Response,
 ): Promise<void> => {
-  const arrTickets = await ticketQueries.getAll();
+  try {
+    const arrTickets = await ticketQueries.getAll();
 
-  res.status(200).json(arrTickets);
+    if (!arrTickets || arrTickets.length === 0) {
+      res.status(404).json({ error: "Tickets not found" });
+      return;
+    }
+
+    res.status(200).json(arrTickets);
+  } catch (err) {
+    console.error("Failed to fetch tickets:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const getTicketById = async (
-  _req: Request,
+  req: Request,
   res: Response,
 ): Promise<void> => {
-  const ticket = await ticketQueries.get(res.locals.numericId);
+  try {
+    const ticket = await ticketQueries.get(res.locals.numericId);
 
-  if (!ticket) {
-    res.status(404).json({ error: "ticket not found" });
-    return;
+    if (!ticket) {
+      res.status(404).json({ error: "Ticket not found" });
+      return;
+    }
+
+    res.status(200).json(ticket);
+  } catch (err) {
+    console.error(
+      `Failed to fetch ticket with id: ${res.locals.numericId}`,
+      err,
+    );
+    res.status(500).json({ error: "Internal server error" });
   }
-  res.status(200).json(ticket);
 };
 
 export const createTicket = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const ticket = req.body as Ticket;
-  const created = await ticketQueries.create(ticket);
+  try {
+    const ticket = req.body as Ticket;
 
-  res.status(201).json(created);
+    if (!ticket || Object.keys(ticket).length === 0) {
+      res.status(400).json({ error: "Invalid request body" });
+      return;
+    }
+
+    const created = await ticketQueries.create(ticket);
+
+    res.status(201).json(created);
+  } catch (err) {
+    console.error("Failed to create ticket:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const deleteTicket = async (
-  _req: Request,
+  req: Request,
   res: Response,
 ): Promise<void> => {
-  const deleted = await ticketQueries.delete(res.locals.numericId);
+  try {
+    const deleted = await ticketQueries.delete(res.locals.numericId);
 
-  res.status(201).json(deleted);
+    if (!deleted) {
+      res.status(404).json({ error: "Ticket not found" });
+      return;
+    }
+
+    res.status(200).json(deleted);
+  } catch (err) {
+    console.error(
+      `Failed to delete ticket with id: ${res.locals.numericId}`,
+      err,
+    );
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const updateTicket = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const updated = await ticketQueries.update({
-    ...(req.body as Partial<Ticket>),
-    id: res.locals.numericId,
-  });
+  try {
+    const updated = await ticketQueries.update({
+      ...(req.body as Partial<Ticket>),
+      id: res.locals.numericId,
+    });
 
-  if (!updated) {
-    res.status(404).json({ error: "Ticket not found to update" });
-    return;
+    if (!updated) {
+      res.status(404).json({ error: "Ticket not found" });
+      return;
+    }
+
+    res.status(200).json(updated);
+  } catch (err) {
+    console.error(
+      `Failed to update ticket with id: ${res.locals.numericId}`,
+      err,
+    );
+    res.status(500).json({ error: "Internal server error" });
   }
-  res.status(200).json(updated);
 };

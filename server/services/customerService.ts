@@ -22,7 +22,7 @@ export const customerQueries: CustomerModel = {
 
   async create(data: CustomerProto): Promise<Customer> {
     const [newCustomer] = await sql<Customer[]>`
-      INSERT INTO "Customer" (firstname, "lastname", "email", phonenumber)
+      INSERT INTO "Customer" ("firstname", "lastname", "email", "phonenumber")
       VALUES (${data.firstname}, ${data.lastname}, ${data.email}, ${data.phonenumber})
       RETURNING *
     `;
@@ -37,10 +37,10 @@ export const customerQueries: CustomerModel = {
     const result = await sql<Customer[]>`
         UPDATE "Customer"
         SET
-          firstname = COALESCE(${payload.firstname ?? null}, firstname),
+          "firstname" = COALESCE(${payload.firstname ?? null}, "firstname"),
           "lastname" = COALESCE(${payload.lastname ?? null}, "lastname"),
           "email" = COALESCE(${payload.email ?? null}, "email"),
-          phonenumber = COALESCE(${payload.phonenumber ?? null}, phonenumber)
+          "phonenumber" = COALESCE(${payload.phonenumber ?? null}, "phonenumber")
         WHERE id = ${id}
         RETURNING *
       `;

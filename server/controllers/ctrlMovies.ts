@@ -7,55 +7,107 @@ export const getMovies = async (
   _req: Request,
   res: Response,
 ): Promise<void> => {
-  const arrMovies = await movieQueries.getAll();
+  try {
+    const arrMovies = await movieQueries.getAll();
 
-  res.status(200).json(arrMovies);
+    if (!arrMovies || arrMovies.length === 0) {
+      res.status(404).json({ error: "Movies not found" });
+      return;
+    }
+
+    res.status(200).json(arrMovies);
+  } catch (err) {
+    console.error("Failed to fetch movies:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const getMovieById = async (
   _req: Request,
   res: Response,
 ): Promise<void> => {
-  const movie = await movieQueries.get(res.locals.numericId);
+  try {
+    const movie = await movieQueries.get(res.locals.numericId);
 
-  if (!movie) {
-    res.status(404).json({ error: "Movie not found" });
-    return;
+    if (!movie) {
+      res.status(404).json({ error: "Movie not found" });
+      return;
+    }
+
+    res.status(200).json(movie);
+  } catch (err) {
+    console.error(
+      `Failed to fetch movie with id: ${res.locals.numericId}`,
+      err,
+    );
+    res.status(500).json({ error: "Internal server error" });
   }
-  res.status(200).json(movie);
 };
 
 export const createMovie = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const movie = req.body as Movie;
-  const created = await movieQueries.create(movie);
+  try {
+    const movie = req.body as Movie;
 
-  res.status(201).json(created);
+    if (!movie || Object.keys(movie).length === 0) {
+      res.status(400).json({ error: "Invalid request body" });
+      return;
+    }
+
+    const created = await movieQueries.create(movie);
+
+    res.status(201).json(created);
+  } catch (err) {
+    console.error("Failed to create movie:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const deleteMovie = async (
   _req: Request,
   res: Response,
 ): Promise<void> => {
-  const deleted = await movieQueries.delete(res.locals.numericId);
+  try {
+    const deleted = await movieQueries.delete(res.locals.numericId);
 
-  res.status(201).json(deleted);
+    if (!deleted) {
+      res.status(404).json({ error: "Movie not found" });
+      return;
+    }
+
+    res.status(200).json(deleted);
+  } catch (err) {
+    console.error(
+      `Failed to delete movie with id: ${res.locals.numericId}`,
+      err,
+    );
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const updateMovie = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const updated = await movieQueries.update({
-    ...(req.body as Partial<Movie>),
-    id: res.locals.numericId,
-  });
+  try {
+    const updated = await movieQueries.update({
+      ...(req.body as Partial<Movie>),
+      id: res.locals.numericId,
+    });
 
-  if (!updated) {
-    res.status(404).json({ error: "Movie not found to update" });
-    return;
+    if (!updated) {
+      res.status(404).json({ error: "Movie not found" });
+      return;
+    }
+
+    res.status(200).json(updated);
+  } catch (err) {
+    console.error(
+      `Failed to update movie with id: ${res.locals.numericId}`,
+      err,
+    );
+    res.status(500).json({ error: "Internal server error" });
   }
-  res.status(200).json(updated);
 };

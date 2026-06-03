@@ -1,6 +1,6 @@
 $kind: collection
-name: Ticket
-scripts:
-  - type: http:beforeRequest
-    code: pm.collectionVariables.set("path", "/ticket");
-order: 2833796238934015
+description: |-
+  Contains all requests for managing tickets in the cinema backoffice.
+  Covers the full CRUD lifecycle: retrieve all tickets, fetch a single ticket by ID,
+  create a new ticket (linked to a customer, seat, showtime, price, and ticket type),
+  update an existing ticket's details, and delete a ticket.

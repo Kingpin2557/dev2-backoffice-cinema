@@ -1,4 +1,18 @@
 $kind: collection
 name: Cinema backoffice API
-variables:
-  path: ""
+description: |-
+  # Cinema Backoffice API
+
+  This collection covers the core backoffice operations for a cinema management system. It is organized into three resource groups:
+
+  ## 🎬 Movie
+  Manage the cinema's movie catalogue. Supports creating, retrieving (all or by ID), updating, and deleting movies. Each movie includes details such as title, description, poster URL, trailer URL, and duration.
+
+  ## 👤 Customer
+  Manage customer records. Supports creating, retrieving (all or by ID), updating, and deleting customers.
+
+  ## 🎟️ Ticket
+  Manage ticket sales and reservations. Supports creating, retrieving (all or by ID), updating, and deleting tickets. Each ticket is linked to a customer, a seat, a showtime, a purchase date, a price, and a ticket type (e.g. student).
+
+  ---
+  All requests use the `{{baseUrl}}` and `{{path}}` variables. Make sure the appropriate environment is active before sending requests.
