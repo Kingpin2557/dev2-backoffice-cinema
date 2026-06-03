@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import type { Ticket } from "../models/tickets";
+import { io } from "../app";
 
 import { ticketQueries } from "../services/ticketService";
 
@@ -23,7 +24,7 @@ export const getTickets = async (
 };
 
 export const getTicketById = async (
-  req: Request,
+  _req: Request,
   res: Response,
 ): Promise<void> => {
   try {
@@ -58,6 +59,7 @@ export const createTicket = async (
 
     const created = await ticketQueries.create(ticket);
 
+    io.emit("ticket:created", created);
     res.status(201).json(created);
   } catch (err) {
     console.error("Failed to create ticket:", err);
@@ -66,7 +68,7 @@ export const createTicket = async (
 };
 
 export const deleteTicket = async (
-  req: Request,
+  _req: Request,
   res: Response,
 ): Promise<void> => {
   try {
@@ -77,6 +79,7 @@ export const deleteTicket = async (
       return;
     }
 
+    io.emit("ticket:deleted", deleted);
     res.status(200).json(deleted);
   } catch (err) {
     console.error(
@@ -102,6 +105,7 @@ export const updateTicket = async (
       return;
     }
 
+    io.emit("ticket:updated", updated);
     res.status(200).json(updated);
   } catch (err) {
     console.error(

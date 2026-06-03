@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import type { Movie } from "../models/movies";
+import { io } from "../app";
 
 import { movieQueries } from "../services/moviesService";
 
@@ -58,6 +59,7 @@ export const createMovie = async (
 
     const created = await movieQueries.create(movie);
 
+    io.emit("movie:create", created);
     res.status(201).json(created);
   } catch (err) {
     console.error("Failed to create movie:", err);
@@ -77,6 +79,7 @@ export const deleteMovie = async (
       return;
     }
 
+    io.emit("movie:delete", deleted);
     res.status(200).json(deleted);
   } catch (err) {
     console.error(
@@ -102,6 +105,7 @@ export const updateMovie = async (
       return;
     }
 
+    io.emit("movie:updated", updated);
     res.status(200).json(updated);
   } catch (err) {
     console.error(

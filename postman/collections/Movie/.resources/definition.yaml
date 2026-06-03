@@ -16,3 +16,5 @@ description: |-
 
   ---
   All requests use the `{{baseUrl}}` and `{{path}}` variables. Make sure the appropriate environment is active before sending requests.
+variables:
+  path: ""
