@@ -19,12 +19,14 @@
   },
   "homepage": "https://github.com/Kingpin2557/dev2-backoffice-cinema#readme",
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "postgres": "^3.4.9",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/socket.io": "^3.0.1",
     "nodemon": "^3.1.14",
