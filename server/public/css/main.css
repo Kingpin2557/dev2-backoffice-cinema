@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap");
+
+:root {
+    --font-family: "Bricolage Grotesque";
+    --transition: cubic-bezier(0.36, 0, 0.66, -0.56);
+
+    --text-black: hsl(142.5, 71.43%, 10.98%);
+    --text-white: hsl(0, 0%, 100%);
+
+    --color-primary: hsl(150, 2.13%, 18.43%);
+    --color-secondary: hsl(167.59, 20%, 28.43%);
+    --color-accent: hsl(142.89, 70.37%, 42.35%);
+
+    --utility-danger: hsl(0, 90.6%, 70.78%);
+    --utility-green: hsl(141.89, 69.16%, 58.04%);
+    --utility-warning: hsl(43.26, 96.41%, 56.27%);
+
+    --space-0: 0px;
+    --space-2: 2px;
+    --space-4: 4px;
+    --space-8: 8px;
+    --space-12: 12px;
+    --space-16: 16px;
+    --space-24: 24px;
+    --space-32: 32px;
+    --space-40: 40px;
+    --space-48: 48px;
+    --space-64: 64px;
+    --space-80: 80px;
+
+    --radius-0: 0px;
+    --radius-2: 2px;
+    --radius-4: 4px;
+    --radius-8: 8px;
+    --radius-12: 12px;
+    --radius-24: 24px;
+    --radius-999: 999px;
+
+    --text-h1: 64.2px;
+    --text-h2: 44.85px;
+    --text-h3: 37.15px;
+    --text-h4: 30.96px;
+    --text-h5: 25.8px;
+    --text-p: 21.5px;
+    --text-caption: 17.92px;
+
+    --letter-spacing-h: 1.5px;
+    --letter-spacing-p: 0;
+    --letter-spacing-caption: 2px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--text-caption);
+    line-height: 1.5;
+    background: var(--color-secondary);
+    color: var(--text-black);
+}
+
+.nav {
+    display: flex;
+    gap: var(--space-16);
+    padding: var(--space-16) var(--space-32);
+    background: var(--color-primary);
+    border-bottom: 1px solid var(--clr-border);
+}
+
+.nav__link {
+    color: var(--text-white);
+    text-decoration: none;
+    font-size: var(--text-caption);
+    transition: color 0.3s ease-in;
+}
+
+.nav__link:hover {
+    color: var(--color-accent);
+}
+
+.main {
+    padding: var(--space-32);
+}
+
+.page {
+    width: 100%;
+}

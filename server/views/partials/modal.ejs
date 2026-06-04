@@ -1,0 +1,21 @@
+<%
+  const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(content);
+  const isUrl = /^https?:\/\//i.test(content);
+%>
+
+<button
+  class="c-btn <%= isUrl ? 'c-btn--preview' : 'c-btn--text' %>"
+  commandfor="modal-<%= modalId %>"
+  command="show-modal"
+><%= isUrl ? label : content %></button>
+
+<dialog class="c-modal" id="modal-<%= modalId %>">
+  <button commandfor="modal-<%= modalId %>" command="close">✕</button>
+  <% if (isImage) { %>
+    <img src="<%= content %>" alt="Preview" />
+  <% } else if (isUrl) { %>
+    <iframe src="<%= content %>" allowfullscreen></iframe>
+  <% } else { %>
+    <p><%= content %></p>
+  <% } %>
+</dialog>

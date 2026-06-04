@@ -1,0 +1,32 @@
+<section class="page">
+  <% if (error) { %>
+    <p style="color: red;">Error: <%= error %></p>
+  <% } else if (movies.length === 0) { %>
+    <p>No movies found.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Title</th>
+          <th scope="col">Poster</th>
+          <th scope="col">Trailer</th>
+          <th scope="col">Description</th>
+          <th scope="col">Duration (min)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% movies.forEach((movie, i) => { %>
+          <tr>
+            <td><%= movie.id %></td>
+            <td><%= movie.title %></td>
+            <td><%- include('partials/modal', { content: movie.posterUrl, label: 'Poster', modalId: 'poster-' + i }) %></td>
+            <td><%- include('partials/modal', { content: movie.trailerUrl, label: 'Trailer', modalId: 'trailer-' + i }) %></td>
+            <td><%- include('partials/modal', { content: movie.description, label: 'Description', modalId: 'desc-' + i }) %></td>
+            <td><%= movie.durationMinutes %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</section>

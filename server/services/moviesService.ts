@@ -1,22 +1,22 @@
-import sql from "../config/db";
-import type { MovieModel, Movie, MovieProto } from "../models/movies";
+import sql from "./db";
+import type { Movie, MovieProto } from "../models/movies";
 
-export const movieQueries: MovieModel = {
-  async getAll(): Promise<Movie[]> {
+export const movieQueries = {
+  async getAll() {
     const data = await sql<Movie[]>`
       SELECT * FROM "Movie"
     `;
     return data ?? [];
   },
 
-  async get(id: number): Promise<Movie | null> {
+  async get(id: number) {
     const data = await sql<Movie[]>`
       SELECT * FROM "Movie" WHERE id = ${id}
     `;
     return data[0] ?? null;
   },
 
-  async create(data: MovieProto): Promise<Movie> {
+  async create(data: MovieProto) {
     const [newMovie] = await sql<Movie[]>`
       INSERT INTO "Movie" (title, "posterUrl", "trailerUrl", description, "durationMinutes")
       VALUES (${data.title}, ${data.posterUrl}, ${data.trailerUrl}, ${data.description}, ${data.durationMinutes})
@@ -25,35 +25,31 @@ export const movieQueries: MovieModel = {
     return newMovie;
   },
 
-  async update(
-    data: Partial<MovieProto> & { id: number },
-  ): Promise<Movie | null> {
+  async update(data: Partial<MovieProto> & { id: number }) {
     const { id, ...payload } = data;
-
     const result = await sql<Movie[]>`
-        UPDATE "Movie"
-        SET
-          "title" = COALESCE(${payload.title ?? null}, "title"),
-          "posterUrl" = COALESCE(${payload.posterUrl ?? null}, "posterUrl"),
-          "trailerUrl" = COALESCE(${payload.trailerUrl ?? null}, "trailerUrl"),
-          "description" = COALESCE(${payload.description ?? null}, "description"),
-          "durationMinutes" = COALESCE(${payload.durationMinutes ?? null}, "durationMinutes")
-        WHERE id = ${id}
-        RETURNING *
-      `;
-
+      UPDATE "Movie"
+      SET
+        "title" = COALESCE(${payload.title ?? null}, "title"),
+        "posterUrl" = COALESCE(${payload.posterUrl ?? null}, "posterUrl"),
+        "trailerUrl" = COALESCE(${payload.trailerUrl ?? null}, "trailerUrl"),
+        "description" = COALESCE(${payload.description ?? null}, "description"),
+        "durationMinutes" = COALESCE(${payload.durationMinutes ?? null}, "durationMinutes")
+      WHERE id = ${id}
+      RETURNING *
+    `;
     return result[0] ?? null;
   },
 
-  async delete(id: number): Promise<Movie | null> {
+  async delete(id: number) {
     const result = await sql<Movie[]>`
-        DELETE FROM "Movie" WHERE id = ${id}
-        RETURNING *
-      `;
+      DELETE FROM "Movie" WHERE id = ${id}
+      RETURNING *
+    `;
     return result[0] ?? null;
   },
 
-  async getByDuration(duration: number): Promise<Movie[]> {
+  async getByDuration(duration: number) {
     const data = await sql<Movie[]>`
       SELECT * FROM "Movie" WHERE "durationMinutes" <= ${duration}
     `;

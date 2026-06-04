@@ -9,14 +9,10 @@ export const idValidation = (
   const parsedId = Number(id);
 
   if (!Number.isInteger(parsedId) || parsedId <= 0) {
-    res
-      .status(400)
-      .json({ error: "Invalid ID format. ID must be a positive integer." });
+    res.status(400).json({ error: "Invalid ID format. ID must be a positive integer." });
     return;
   }
 
-  // Optional: Store the parsed number in res.locals to avoid parsing it again in the controller
   res.locals.numericId = parsedId;
-
   next();
 };

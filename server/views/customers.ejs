@@ -1,0 +1,30 @@
+<section class="page">
+  <% if (error) { %>
+    <p style="color: red;">Error: <%= error %></p>
+  <% } else if (customers.length === 0) { %>
+    <p>No customers found.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">First name</th>
+          <th scope="col">Last name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% customers.forEach(customer => { %>
+          <tr>
+            <td><%= customer.id %></td>
+            <td><%= customer.firstname %></td>
+            <td><%= customer.lastname %></td>
+            <td><%= customer.email %></td>
+            <td><%= customer.phonenumber %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</section>

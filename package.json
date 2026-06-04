@@ -1,36 +1,30 @@
 {
-  "name": "dev2-backoffice-cinema",
+  "name": "dev2-backoffice",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --ext ts --exec ts-node ./server/app.ts"
+    "dev": "nodemon --ext ts --exec ts-node ./server/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Kingpin2557/dev2-backoffice-cinema.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Kingpin2557/dev2-backoffice-cinema/issues"
-  },
-  "homepage": "https://github.com/Kingpin2557/dev2-backoffice-cinema#readme",
   "dependencies": {
     "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
+    "dotenv": "^17.3.1",
+    "ejs": "^5.0.1",
     "express": "^5.2.1",
+    "express-ejs-layouts": "^2.5.1",
     "postgres": "^3.4.9",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
+    "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.6",
-    "@types/socket.io": "^3.0.1",
+    "@types/express-ejs-layouts": "^2.5.4",
+    "@types/node": "^20.14.0",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
-    "typescript": "^6.0.3"
+    "typescript": "^5.9.3"
   }
 }
