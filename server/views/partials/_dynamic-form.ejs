@@ -1,5 +1,4 @@
-<form method="POST" action="<%= actionPath %>" class="c-dynamic-form">
-
+<form method="POST" action="<%= actionPath %>" class="c-form">
   <% Object.keys(record).forEach(key => { %>
     <% if (key !== 'id' && key !== 'created_at' && key !== 'updated_at') { %>
 
@@ -29,13 +28,19 @@
           .replace(/([A-Z])/g, ' $1')
           .trim();
         const capitalizedLabel = labelText.charAt(0).toUpperCase() + labelText.slice(1);
+
+        let displayValue = value !== null && value !== undefined ? value : '';
+        if (inputType === "date" && displayValue) {
+          displayValue = String(displayValue).slice(0, 10);
+        }
       %>
 
-      <div class="c-form-group">
-        <label for="<%= key %>"><%= capitalizedLabel %></label>
+      <div class="c-form__group">
+        <label for="<%= key %>" style="position-anchor: --input-<%= key %>"><%= capitalizedLabel %></label>
 
         <% if (inputType === "checkbox") { %>
           <input
+            style="anchor-name: --input-<%= key %>"
             type="checkbox"
             id="<%= key %>"
             name="<%= key %>"
@@ -44,10 +49,12 @@
           />
         <% } else { %>
           <input
+            style="anchor-name: --input-<%= key %>"
             type="<%= inputType %>"
             id="<%= key %>"
             name="<%= key %>"
-            value="<%= value !== null && value !== undefined ? value : '' %>"
+            value="<%= displayValue %>"
+            placeholder="<%= displayValue %>"
             required
           />
         <% } %>

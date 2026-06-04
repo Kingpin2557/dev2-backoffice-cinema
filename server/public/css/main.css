@@ -73,6 +73,18 @@ section {
     gap: var(--space-12);
 }
 
+header {
+    display: flex;
+    flex-direction: column;
+
+    color: var(--text-white);
+
+    a {
+        color: var(--utility-green);
+        text-underline-offset: var(--space-4);
+    }
+}
+
 .nav {
     display: flex;
     gap: var(--space-16);

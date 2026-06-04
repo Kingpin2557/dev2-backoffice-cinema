@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="/css/modal.css" />
     <link rel="stylesheet" href="/css/pagination.css"/>
     <link rel="stylesheet" href="/css/btn.css" />
+    <link rel="stylesheet" href="/css/form.css"
   </head>
   <body>
-    <nav class="nav">
-      <a href="/movies" class="nav__link <%= path === '/movies' ? 'nav__link--active' : '' %>">Movies</a>
-      <a href="/customers" class="nav__link <%= path === '/customers' ? 'nav__link--active' : '' %>">Customers</a>
-      <a href="/tickets" class="nav__link <%= path === '/tickets' ? 'nav__link--active' : '' %>">Tickets</a>
-    </nav>
+      <nav class="nav">
+        <a href="/movies" class="nav__link <%= path.startsWith('/movies') ? 'nav__link--active' : '' %>">Movies</a>
+        <a href="/customers" class="nav__link <%= path.startsWith('/customers') ? 'nav__link--active' : '' %>">Customers</a>
+        <a href="/tickets" class="nav__link <%= path.startsWith('/tickets') ? 'nav__link--active' : '' %>">Tickets</a>
+      </nav>
     <main class="main">
       <%- body %>
     </main>

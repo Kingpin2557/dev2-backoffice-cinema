@@ -1,0 +1,57 @@
+.c-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: var(--space-48);
+
+    width: fit-content;
+
+    background-color: var(--color-background);
+
+    padding: var(--space-40);
+    padding-block-start: var(--space-48);
+    border-radius: var(--radius-12);
+}
+
+.c-form__group {
+    position: relative;
+
+    input {
+        width: 100%;
+        padding: var(--space-16);
+        padding-top: var(--space-24);
+        background-color: var(--color-secondary);
+        border-radius: var(--radius-12);
+        border: none;
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        transition:
+            outline-color 0.2s var(--transition),
+            outline-offset 0.2s var(--transition);
+        color: var(--text-white);
+
+        &:focus-visible {
+            outline-color: var(--color-accent);
+            outline-offset: 3px;
+        }
+    }
+
+    label {
+        position: absolute;
+        top: calc(anchor(top) - 25px);
+        left: calc(anchor(left) + var(--space-16));
+        padding-inline: var(--space-8);
+        padding-block: var(--space-4);
+        color: var(--text-black);
+        background-color: var(--color-accent);
+        border-radius: var(--radius-4);
+        transition: all 0.2s var(--transition);
+        pointer-events: none;
+    }
+
+    &:focus-within label {
+        top: calc(anchor(top) - 35px);
+        left: calc(anchor(left) + var(--space-16));
+        font-size: 0.75rem;
+    }
+}
