@@ -1,0 +1,63 @@
+<form method="POST" action="<%= actionPath %>" class="c-dynamic-form">
+
+  <% Object.keys(record).forEach(key => { %>
+    <% if (key !== 'id' && key !== 'created_at' && key !== 'updated_at') { %>
+
+      <%
+        const value = record[key];
+        let inputType = "text"; // Default baseline fallback
+
+        // 2. Infer input type based on the value's native type or key name
+        if (typeof value === "number") {
+          inputType = "number";
+        } else if (typeof value === "boolean") {
+          inputType = "checkbox";
+        } else if (value instanceof Date || (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value))) {
+          inputType = "date";
+        } else if (/email/i.test(key)) {
+          inputType = "email";
+        } else if (/phone|tel/i.test(key)) {
+          inputType = "tel";
+        } else if (/password/i.test(key)) {
+          inputType = "password";
+        }
+
+        // 3. Humanize the database column name for the label text
+        // (e.g., "release_year" or "releaseYear" becomes "Release Year")
+        const labelText = key
+          .replace(/[-_]/g, ' ')
+          .replace(/([A-Z])/g, ' $1')
+          .trim();
+        const capitalizedLabel = labelText.charAt(0).toUpperCase() + labelText.slice(1);
+      %>
+
+      <div class="c-form-group">
+        <label for="<%= key %>"><%= capitalizedLabel %></label>
+
+        <% if (inputType === "checkbox") { %>
+          <input
+            type="checkbox"
+            id="<%= key %>"
+            name="<%= key %>"
+            value="true"
+            <%= value ? 'checked' : '' %>
+          />
+        <% } else { %>
+          <input
+            type="<%= inputType %>"
+            id="<%= key %>"
+            name="<%= key %>"
+            value="<%= value !== null && value !== undefined ? value : '' %>"
+            required
+          />
+        <% } %>
+      </div>
+
+    <% } %>
+  <% }) %>
+
+  <div class="u-actions">
+    <button type="submit" class="c-btn c-btn--preview">Save Changes</button>
+    <button type="button" class="c-btn c-btn--close" onclick="this.closest('dialog').close()">Cancel</button>
+  </div>
+</form>

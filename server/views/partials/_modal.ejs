@@ -10,7 +10,7 @@
 ><%= isUrl ? label : content %></button>
 
 <dialog class="c-modal" id="modal-<%= modalId %>">
-  <button commandfor="modal-<%= modalId %>" command="close">✕</button>
+  <button class="c-btn c-btn--close" commandfor="modal-<%= modalId %>" command="close">✕</button>
   <% if (isImage) { %>
     <img src="<%= content %>" alt="Preview" />
   <% } else if (isUrl) { %>

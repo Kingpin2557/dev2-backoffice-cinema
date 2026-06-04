@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/table.css" />
     <link rel="stylesheet" href="/css/modal.css" />
     <link rel="stylesheet" href="/css/pagination.css"/>
+    <link rel="stylesheet" href="/css/btn.css" />
   </head>
   <body>
     <nav class="nav">
@@ -18,6 +19,7 @@
     <main class="main">
       <%- body %>
     </main>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
       document.querySelectorAll('.c-modal').forEach(dialog => {
         dialog.addEventListener('close', () => {
@@ -25,6 +27,24 @@
           if (iframe) iframe.src = iframe.src;
         });
       });
+
+      const socket = io();
+
+      let submitting = false;
+
+      document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', () => submitting = true);
+      });
+
+      const reloadOn = [
+        'movie:created', 'movie:updated', 'movie:deleted',
+        'customer:created', 'customer:updated', 'customer:deleted',
+        'ticket:created', 'ticket:updated', 'ticket:deleted',
+      ];
+
+      reloadOn.forEach(event => socket.on(event, () => {
+        if (!submitting) location.reload();
+      }));
     </script>
   </body>
 </html>

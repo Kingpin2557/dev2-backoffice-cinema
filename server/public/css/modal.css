@@ -1,29 +1,3 @@
-.c-btn {
-    background: none;
-    border: 1px solid var(--clr-border);
-    border-radius: var(--radius-8);
-    color: var(--clr-text);
-    font-family: var(--font-family);
-    font-size: var(--text-caption);
-    padding: var(--space-8) var(--space-12);
-    cursor: pointer;
-}
-
-.c-btn:hover {
-    background-color: var(--clr-surface-raised);
-    color: var(--clr-text-strong);
-}
-
-.c-btn--text {
-    width: 200px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    white-space: normal;
-    text-align: left;
-}
-
 .c-modal {
     background-color: var(--clr-surface);
     border: 1px solid var(--clr-border);
@@ -38,9 +12,16 @@
 }
 
 .c-modal[open] {
-    display: flex;
-    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: grid;
+    justify-items: end;
     gap: var(--space-16);
+
+    background-color: var(--color-secondary);
 }
 
 .c-modal img {
@@ -53,4 +34,11 @@
     width: 560px;
     max-width: 100%;
     aspect-ratio: 16 / 9;
+
+    border: none;
+    border-radius: var(--radius-8);
+}
+
+.c-modal p {
+    color: var(--text-white);
 }

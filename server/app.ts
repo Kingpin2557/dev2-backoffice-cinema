@@ -5,8 +5,30 @@ import expressLayouts from "express-ejs-layouts";
 import path from "path";
 import routes from "./routes";
 
+import { createServer, Server as HttpServer } from "http";
+import { Server as SocketIOServer } from "socket.io";
+
 const app: Application = express();
 const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
+
+const httpServer: HttpServer = createServer(app);
+
+const io: SocketIOServer = new SocketIOServer(httpServer, {
+  cors: {
+    origin: [
+      process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : `http://localhost:${PORT}`,
+    ],
+    credentials: true,
+  },
+});
+
+app.set("io", io);
+
+io.on("connection", (socket) => {
+  console.log(`User connected to real-time sync: ${socket.id}`);
+});
 
 app.use(
   cors({
@@ -37,6 +59,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", routes);
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

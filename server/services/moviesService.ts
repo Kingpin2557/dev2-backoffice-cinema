@@ -4,7 +4,7 @@ import type { Movie, MovieProto } from "../models/movies";
 export const movieQueries = {
   async getAll() {
     const data = await sql<Movie[]>`
-      SELECT * FROM "Movie"
+      SELECT * FROM "Movie" ORDER BY id
     `;
     return data ?? [];
   },
@@ -41,16 +41,24 @@ export const movieQueries = {
     return result[0] ?? null;
   },
 
-  async delete(id: number) {
-    const result = await sql<Movie[]>`
-      DELETE FROM "Movie" WHERE id = ${id}
-      RETURNING *
-    `;
-    return result[0] ?? null;
+  async delete(id: number): Promise<Movie | null> {
+    return await sql.begin(async (sql) => {
+      await sql`DELETE FROM "movie_genre" WHERE "movieId" = ${id}`;
+      await sql`DELETE FROM "movie_languages" WHERE "movieId" = ${id}`;
+      await sql`DELETE FROM "movie_subtitles" WHERE "movieId" = ${id}`;
+      await sql`DELETE FROM "movie_formats" WHERE "movieId" = ${id}`;
+      await sql`DELETE FROM "Showtime" WHERE "movieId" = ${id}`;
+      const result = await sql<
+        Movie[]
+      >`DELETE FROM "Movie" WHERE id = ${id} RETURNING *`;
+      return result[0] ?? null;
+    });
   },
 
   async getPaginated(limit: number, offset: number) {
-    const data = await sql<Movie[]>`SELECT * FROM "Movie" LIMIT ${limit} OFFSET ${offset}`;
+    const data = await sql<Movie[]>`
+      SELECT * FROM "Movie" ORDER BY id LIMIT ${limit} OFFSET ${offset}
+    `;
     return data ?? [];
   },
 

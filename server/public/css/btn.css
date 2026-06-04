@@ -1,0 +1,67 @@
+.c-btn {
+    background: none;
+
+    color: var(--clr-text);
+    font-family: var(--font-family);
+    font-size: var(--text-caption);
+    padding: var(--space-8) var(--space-12);
+    cursor: pointer;
+    width: fit-content;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-8);
+}
+
+.c-btn--preview {
+    border-color: var(--utility-green);
+    color: var(--utility-green);
+
+    transition: background-color 0.3s ease-in;
+    &:hover {
+        background-color: var(--utility-green);
+        color: var(--text-dark);
+    }
+}
+
+.c-btn--text {
+    height: 50px;
+    width: 500px;
+    text-align: start;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    border-color: var(--utility-green);
+    color: var(--utility-green);
+
+    transition: background-color 0.3s ease-in;
+    &:hover {
+        background-color: var(--utility-green);
+        color: var(--text-dark);
+    }
+}
+
+.c-btn--edit {
+    border-color: var(--utility-warning);
+    color: var(--utility-warning);
+    text-decoration: none;
+
+    transition: background-color 0.3s ease-in;
+    &:hover {
+        background-color: var(--utility-warning);
+        color: var(--text-dark);
+    }
+}
+
+.c-btn--close,
+.c-btn--delete {
+    border-color: var(--utility-danger);
+    color: var(--utility-danger);
+
+    transition: background-color 0.3s ease-in;
+    &:hover {
+        background-color: var(--utility-danger);
+        color: var(--text-dark);
+    }
+}

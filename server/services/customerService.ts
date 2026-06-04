@@ -4,7 +4,7 @@ import type { Customer, CustomerProto } from "../models/customers";
 export const customerQueries = {
   async getAll() {
     const data = await sql<Customer[]>`
-      SELECT * FROM "Customer"
+      SELECT * FROM "Customer" ORDER BY id
     `;
     return data ?? [];
   },
@@ -49,12 +49,16 @@ export const customerQueries = {
   },
 
   async getPaginated(limit: number, offset: number) {
-    const data = await sql<Customer[]>`SELECT * FROM "Customer" LIMIT ${limit} OFFSET ${offset}`;
+    const data = await sql<Customer[]>`
+      SELECT * FROM "Customer" ORDER BY id LIMIT ${limit} OFFSET ${offset}
+    `;
     return data ?? [];
   },
 
   async getCount() {
-    const result = await sql<[{ count: string }]>`SELECT COUNT(*) FROM "Customer"`;
+    const result = await sql<
+      [{ count: string }]
+    >`SELECT COUNT(*) FROM "Customer"`;
     return parseInt(result[0].count);
   },
 };

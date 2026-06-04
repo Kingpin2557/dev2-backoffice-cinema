@@ -15,7 +15,7 @@
     --utility-green: hsl(141.89, 69.16%, 58.04%);
     --utility-warning: hsl(43.26, 96.41%, 56.27%);
 
-    --color-background: hsl(167.59, 20%, 55%);
+    --color-background: hsl(167.59, 20%, 45%);
 
     --space-0: 0px;
     --space-2: 2px;
@@ -102,4 +102,13 @@ section {
 
 .page {
     width: 100%;
+}
+
+.u-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    gap: 8px;
+
+    height: 100%;
 }
