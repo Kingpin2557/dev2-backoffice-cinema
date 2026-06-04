@@ -67,6 +67,12 @@ body {
     color: var(--text-black);
 }
 
+section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+}
+
 .nav {
     display: flex;
     gap: var(--space-16);

@@ -1,0 +1,15 @@
+ <nav class="pagination">
+   <% if (page > 1) { %>
+     <a href="/customers?page=<%= page - 1 %>" class="pagination__link pagination__link--ctrl" >Previous</a>
+   <% } %>
+
+   <% for (let i = 1; i <= totalPages; i++) { %>
+     <a href="/customers?page=<%= i %>" class="pagination__link <%= i === page ? 'pagination__link--active' : '' %>">
+       <%= i %>
+     </a>
+   <% } %>
+
+   <% if (page < totalPages) { %>
+     <a href="/customers?page=<%= page + 1 %>" class="pagination__link pagination__link--ctrl">Next</a>
+   <% } %>
+ </nav>

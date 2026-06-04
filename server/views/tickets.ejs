@@ -1,4 +1,4 @@
-<section class="page">
+<section>
   <% if (error) { %>
     <p style="color: red;">Error: <%= error %></p>
   <% } else if (tickets.length === 0) { %>
@@ -30,5 +30,6 @@
         <% }) %>
       </tbody>
     </table>
+    <%- include('partials/pagination', { page: page, totalPages: totalPages }) %>
   <% } %>
 </section>

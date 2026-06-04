@@ -7,10 +7,23 @@ const router = express.Router();
 
 router.get("/", (_req, res) => res.redirect("/movies"));
 
-router.get("/movies", async (_req: Request, res: Response) => {
+router.get("/movies", async (req: Request, res: Response) => {
   try {
-    const movies = await movieQueries.getAll();
-    res.render("movies", { title: "Movies", movies, error: null });
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = 5;
+    const offset = (page - 1) * limit;
+
+    const all = await movieQueries.getAll();
+    const movies = all.slice(offset, offset + limit);
+    const totalPages = Math.ceil(all.length / limit);
+
+    res.render("movies", {
+      movies,
+      page,
+      totalPages,
+      error: null,
+      title: "Movies",
+    });
   } catch (err) {
     res.render("movies", {
       title: "Movies",
@@ -20,10 +33,23 @@ router.get("/movies", async (_req: Request, res: Response) => {
   }
 });
 
-router.get("/customers", async (_req: Request, res: Response) => {
+router.get("/customers", async (req: Request, res: Response) => {
   try {
-    const customers = await customerQueries.getAll();
-    res.render("customers", { title: "Customers", customers, error: null });
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = 5;
+    const offset = (page - 1) * limit;
+
+    const all = await customerQueries.getAll();
+    const customers = all.slice(offset, offset + limit);
+    const totalPages = Math.ceil(all.length / limit);
+
+    res.render("customers", {
+      customers,
+      page,
+      totalPages,
+      error: null,
+      title: "Customers",
+    });
   } catch (err) {
     res.render("customers", {
       title: "Customers",
@@ -33,10 +59,23 @@ router.get("/customers", async (_req: Request, res: Response) => {
   }
 });
 
-router.get("/tickets", async (_req: Request, res: Response) => {
+router.get("/tickets", async (req: Request, res: Response) => {
   try {
-    const tickets = await ticketQueries.getAll();
-    res.render("tickets", { title: "Tickets", tickets, error: null });
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = 5;
+    const offset = (page - 1) * limit;
+
+    const all = await ticketQueries.getAll();
+    const tickets = all.slice(offset, offset + limit);
+    const totalPages = Math.ceil(all.length / limit);
+
+    res.render("tickets", {
+      tickets,
+      page,
+      totalPages,
+      error: null,
+      title: "Tickets",
+    });
   } catch (err) {
     res.render("tickets", {
       title: "Tickets",

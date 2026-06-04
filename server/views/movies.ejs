@@ -1,4 +1,4 @@
-<section class="page">
+<section>
   <% if (error) { %>
     <p style="color: red;">Error: <%= error %></p>
   <% } else if (movies.length === 0) { %>
@@ -28,5 +28,6 @@
         <% }) %>
       </tbody>
     </table>
+    <%- include('partials/pagination', { page: page, totalPages: totalPages }) %>
   <% } %>
 </section>
