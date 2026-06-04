@@ -10,9 +10,9 @@
   </head>
   <body>
     <nav class="nav">
-      <a href="/movies" class="nav__link">Movies</a>
-      <a href="/customers" class="nav__link">Customers</a>
-      <a href="/tickets" class="nav__link">Tickets</a>
+      <a href="/movies" class="nav__link <%= path === '/movies' ? 'nav__link--active' : '' %>">Movies</a>
+      <a href="/customers" class="nav__link <%= path === '/customers' ? 'nav__link--active' : '' %>">Customers</a>
+      <a href="/tickets" class="nav__link <%= path === '/tickets' ? 'nav__link--active' : '' %>">Tickets</a>
     </nav>
     <main class="main">
       <%- body %>
