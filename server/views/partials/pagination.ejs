@@ -1,15 +1,9 @@
- <nav class="pagination">
-   <% if (page > 1) { %>
-     <a href="/customers?page=<%= page - 1 %>" class="pagination__link pagination__link--ctrl" >Previous</a>
-   <% } %>
-
-   <% for (let i = 1; i <= totalPages; i++) { %>
-     <a href="/customers?page=<%= i %>" class="pagination__link <%= i === page ? 'pagination__link--active' : '' %>">
-       <%= i %>
-     </a>
-   <% } %>
-
-   <% if (page < totalPages) { %>
-     <a href="/customers?page=<%= page + 1 %>" class="pagination__link pagination__link--ctrl">Next</a>
-   <% } %>
- </nav>
+<nav class="pagination">
+  <a href="<%= path %>?page=<%= page - 1 %>" class="pagination__link pagination__link--ctrl <%= page <= 1 ? 'pagination__link--disabled' : '' %>">Previous</a>
+  <% for (let i = 1; i <= totalPages; i++) { %>
+    <a href="<%= path %>?page=<%= i %>" class="pagination__link <%= i === page ? 'pagination__link--active' : '' %>">
+      <%= i %>
+    </a>
+  <% } %>
+  <a href="<%= path %>?page=<%= page + 1 %>" class="pagination__link pagination__link--ctrl <%= page >= totalPages ? 'pagination__link--disabled' : '' %>">Next</a>
+</nav>

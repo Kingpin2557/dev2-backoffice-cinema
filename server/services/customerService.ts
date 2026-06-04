@@ -47,4 +47,14 @@ export const customerQueries = {
     `;
     return result[0] ?? null;
   },
+
+  async getPaginated(limit: number, offset: number) {
+    const data = await sql<Customer[]>`SELECT * FROM "Customer" LIMIT ${limit} OFFSET ${offset}`;
+    return data ?? [];
+  },
+
+  async getCount() {
+    const result = await sql<[{ count: string }]>`SELECT COUNT(*) FROM "Customer"`;
+    return parseInt(result[0].count);
+  },
 };

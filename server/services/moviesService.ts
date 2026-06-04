@@ -49,6 +49,16 @@ export const movieQueries = {
     return result[0] ?? null;
   },
 
+  async getPaginated(limit: number, offset: number) {
+    const data = await sql<Movie[]>`SELECT * FROM "Movie" LIMIT ${limit} OFFSET ${offset}`;
+    return data ?? [];
+  },
+
+  async getCount() {
+    const result = await sql<[{ count: string }]>`SELECT COUNT(*) FROM "Movie"`;
+    return parseInt(result[0].count);
+  },
+
   async getByDuration(duration: number) {
     const data = await sql<Movie[]>`
       SELECT * FROM "Movie" WHERE "durationMinutes" <= ${duration}

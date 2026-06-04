@@ -6,10 +6,21 @@ import { idValidation } from "../middleware/idValidation";
 
 const router = express.Router();
 
-router.get("/movie", async (_req, res) => {
+router.get("/movie", async (req, res) => {
   try {
-    const movies = await movieQueries.getAll();
-    res.status(200).json(movies);
+    if (req.query.page || req.query.limit) {
+      const page = Math.max(1, parseInt(req.query.page as string) || 1);
+      const limit = Math.min(50, parseInt(req.query.limit as string) || 5);
+      const offset = (page - 1) * limit;
+      const [movies, total] = await Promise.all([
+        movieQueries.getPaginated(limit, offset),
+        movieQueries.getCount(),
+      ]);
+      res.status(200).json({ movies, total, page, totalPages: Math.ceil(total / limit) });
+    } else {
+      const movies = await movieQueries.getAll();
+      res.status(200).json(movies);
+    }
   } catch {
     res.status(500).json({ error: "Internal server error" });
   }
@@ -57,10 +68,21 @@ router.delete("/movie/:id", idValidation, async (_req, res) => {
   }
 });
 
-router.get("/customer", async (_req, res) => {
+router.get("/customer", async (req, res) => {
   try {
-    const customers = await customerQueries.getAll();
-    res.status(200).json(customers);
+    if (req.query.page || req.query.limit) {
+      const page = Math.max(1, parseInt(req.query.page as string) || 1);
+      const limit = Math.min(50, parseInt(req.query.limit as string) || 5);
+      const offset = (page - 1) * limit;
+      const [customers, total] = await Promise.all([
+        customerQueries.getPaginated(limit, offset),
+        customerQueries.getCount(),
+      ]);
+      res.status(200).json({ customers, total, page, totalPages: Math.ceil(total / limit) });
+    } else {
+      const customers = await customerQueries.getAll();
+      res.status(200).json(customers);
+    }
   } catch {
     res.status(500).json({ error: "Internal server error" });
   }
@@ -108,10 +130,21 @@ router.delete("/customer/:id", idValidation, async (_req, res) => {
   }
 });
 
-router.get("/ticket", async (_req, res) => {
+router.get("/ticket", async (req, res) => {
   try {
-    const tickets = await ticketQueries.getAll();
-    res.status(200).json(tickets);
+    if (req.query.page || req.query.limit) {
+      const page = Math.max(1, parseInt(req.query.page as string) || 1);
+      const limit = Math.min(50, parseInt(req.query.limit as string) || 5);
+      const offset = (page - 1) * limit;
+      const [tickets, total] = await Promise.all([
+        ticketQueries.getPaginated(limit, offset),
+        ticketQueries.getCount(),
+      ]);
+      res.status(200).json({ tickets, total, page, totalPages: Math.ceil(total / limit) });
+    } else {
+      const tickets = await ticketQueries.getAll();
+      res.status(200).json(tickets);
+    }
   } catch {
     res.status(500).json({ error: "Internal server error" });
   }

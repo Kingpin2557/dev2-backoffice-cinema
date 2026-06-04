@@ -1,5 +1,8 @@
 $kind: http-request
 name: getCustomers
-url: '{{baseUrl}}{{path}}'
+url: "{{baseUrl}}{{path}}?page=1=limit=5"
 method: GET
+queryParams:
+  page: "1"
+  limit: "5"
 order: 1780328287680

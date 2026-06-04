@@ -28,8 +28,13 @@
             <td><%= ticket.type %></td>
           </tr>
         <% }) %>
+        <% for (let i = 0; i < emptyRows; i++) { %>
+          <tr class="table__row--empty">
+            <td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+        <% } %>
       </tbody>
     </table>
-    <%- include('partials/pagination', { page: page, totalPages: totalPages }) %>
+    <%- include('partials/pagination', { page: page, totalPages: totalPages , path: path }) %>
   <% } %>
 </section>

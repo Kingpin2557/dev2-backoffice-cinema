@@ -9,10 +9,29 @@
     text-align: center;
     align-content: center;
     border: 1px solid var(--color-primary);
-    width: 30px;
+    width: 50px;
+    border-radius: var(--radius-8);
+    padding-block: var(--space-8);
+    background-color: var(--color-primary);
+
+    transition: background-color 0.3 ease-in;
+
+    &:hover {
+        background-color: var(--color-accent);
+    }
+}
+
+.pagination__link--active {
+    background-color: var(--color-accent);
+}
+
+.pagination__link--disabled {
+    opacity: 0.4;
+    pointer-events: none;
 }
 
 .pagination__link--ctrl {
     width: fit-content;
+
     padding-inline: var(--space-24);
 }

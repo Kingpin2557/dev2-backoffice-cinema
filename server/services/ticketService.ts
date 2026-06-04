@@ -49,4 +49,14 @@ export const ticketQueries = {
     `;
     return result[0] ?? null;
   },
+
+  async getPaginated(limit: number, offset: number) {
+    const data = await sql<Ticket[]>`SELECT * FROM "Ticket" LIMIT ${limit} OFFSET ${offset}`;
+    return data ?? [];
+  },
+
+  async getCount() {
+    const result = await sql<[{ count: string }]>`SELECT COUNT(*) FROM "Ticket"`;
+    return parseInt(result[0].count);
+  },
 };
