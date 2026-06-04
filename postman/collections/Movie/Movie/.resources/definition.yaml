@@ -1,11 +1,6 @@
 $kind: collection
-name: Movie
-description: |-
-  Contains all requests for managing movies in the cinema backoffice.
-  Covers the full CRUD lifecycle: retrieve all movies, fetch a single movie by ID,
-  create a new movie (with title, description, poster URL, trailer URL, and duration),
-  update an existing movie's details, and delete a movie.
 scripts:
   - type: http:beforeRequest
-    code: pm.collectionVariables.set("path", "/movie");
     language: text/javascript
+    code: |-
+      pm.variables.set("path", "/movie");

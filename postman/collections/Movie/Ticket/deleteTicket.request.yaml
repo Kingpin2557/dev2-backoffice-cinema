@@ -1,5 +1,5 @@
 $kind: http-request
 name: deleteTicket
-url: "{{baseUrl}}{{path}}/28"
+url: "{{baseUrl}}{{path}}/27"
 method: DELETE
 order: 4495106166261088

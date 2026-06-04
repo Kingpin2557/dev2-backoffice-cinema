@@ -1,5 +1,5 @@
 $kind: http-request
 name: deleteCustomer
-url: "{{baseUrl}}{{path}}/"
+url: "{{baseUrl}}{{path}}/40"
 method: DELETE
 order: 4479005514696006
