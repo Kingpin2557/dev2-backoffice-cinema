@@ -14,7 +14,7 @@ export const getMovies = async (req: Request, res: Response): Promise<void> => {
     const totalPages = Math.max(1, Math.ceil(total / LIMIT));
     res.render("movies", { title: "Movies", movies, page, totalPages, error: null });
   } catch (err) {
-    res.render("movies", { title: "Movies", movies: [], page: 1, totalPages: 1, error: (err as Error).message });
+    res.render("movies", { title: "Movies", movies: [], page: 1, totalPages: 1, error: "Could not load movies. Please try again later." });
   }
 };
 

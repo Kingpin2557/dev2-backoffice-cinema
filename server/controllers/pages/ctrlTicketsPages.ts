@@ -14,7 +14,7 @@ export const getTickets = async (req: Request, res: Response): Promise<void> => 
     const totalPages = Math.max(1, Math.ceil(total / LIMIT));
     res.render("tickets", { title: "Tickets", tickets, page, totalPages, error: null });
   } catch (err) {
-    res.render("tickets", { title: "Tickets", tickets: [], page: 1, totalPages: 1, error: (err as Error).message });
+    res.render("tickets", { title: "Tickets", tickets: [], page: 1, totalPages: 1, error: "Could not load tickets. Please try again later." });
   }
 };
 

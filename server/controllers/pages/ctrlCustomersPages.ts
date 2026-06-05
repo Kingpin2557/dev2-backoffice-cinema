@@ -14,7 +14,7 @@ export const getCustomers = async (req: Request, res: Response): Promise<void> =
     const totalPages = Math.max(1, Math.ceil(total / LIMIT));
     res.render("customers", { title: "Customers", customers, page, totalPages, error: null });
   } catch (err) {
-    res.render("customers", { title: "Customers", customers: [], page: 1, totalPages: 1, error: (err as Error).message });
+    res.render("customers", { title: "Customers", customers: [], page: 1, totalPages: 1, error: "Could not load customers. Please try again later." });
   }
 };
 
