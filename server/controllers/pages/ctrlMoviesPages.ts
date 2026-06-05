@@ -40,7 +40,7 @@ export const postEditMovie = async (req: Request, res: Response): Promise<void> 
       durationMinutes: req.body.durationMinutes ? parseInt(req.body.durationMinutes as string, 10) : undefined,
     });
     if (!updated) { res.status(404).send(`Failed to update movie with id: ${movieId}`); return; }
-    req.app.get("io").emit("movie:updated", updated);
+    req.app.get("io")?.emit("movie:updated", updated);
     res.redirect("/movies");
   } catch {
     res.status(500).send("Internal Server Error saving changes.");
@@ -61,7 +61,7 @@ export const postAddMovie = async (req: Request, res: Response): Promise<void> =
       ...req.body,
       durationMinutes: req.body.durationMinutes ? parseInt(req.body.durationMinutes as string, 10) : 0,
     });
-    req.app.get("io").emit("movie:created", created);
+    req.app.get("io")?.emit("movie:created", created);
     res.redirect("/movies");
   } catch {
     res.status(500).send("Internal Server Error saving changes.");
@@ -71,6 +71,6 @@ export const postAddMovie = async (req: Request, res: Response): Promise<void> =
 export const deleteMovie = async (req: Request, res: Response): Promise<void> => {
   const movieId = parseInt(req.params.id as string, 10);
   await movieQueries.delete(movieId);
-  req.app.get("io").emit("movie:deleted", movieId);
+  req.app.get("io")?.emit("movie:deleted", movieId);
   res.redirect("/movies");
 };

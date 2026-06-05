@@ -34,7 +34,7 @@ export const getCustomerById = async (_req: Request, res: Response): Promise<voi
 export const createCustomer = async (req: Request, res: Response): Promise<void> => {
   try {
     const created = await customerQueries.create(req.body);
-    req.app.get("io").emit("customer:created", created);
+    req.app.get("io")?.emit("customer:created", created);
     res.status(201).json(created);
   } catch {
     res.status(500).json({ error: "Internal server error" });
@@ -45,7 +45,7 @@ export const updateCustomer = async (req: Request, res: Response): Promise<void>
   try {
     const updated = await customerQueries.update({ ...req.body, id: res.locals.numericId });
     if (!updated) { res.status(404).json({ error: "Customer not found" }); return; }
-    req.app.get("io").emit("customer:updated", updated);
+    req.app.get("io")?.emit("customer:updated", updated);
     res.status(200).json(updated);
   } catch {
     res.status(500).json({ error: "Internal server error" });
@@ -56,7 +56,7 @@ export const deleteCustomer = async (req: Request, res: Response): Promise<void>
   try {
     const deleted = await customerQueries.delete(res.locals.numericId);
     if (!deleted) { res.status(404).json({ error: "Customer not found" }); return; }
-    req.app.get("io").emit("customer:deleted", res.locals.numericId);
+    req.app.get("io")?.emit("customer:deleted", res.locals.numericId);
     res.status(200).json(deleted);
   } catch {
     res.status(500).json({ error: "Internal server error" });

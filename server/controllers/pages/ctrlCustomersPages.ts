@@ -36,7 +36,7 @@ export const postEditCustomer = async (req: Request, res: Response): Promise<voi
     if (isNaN(customerId)) { res.status(400).send("Invalid record identifier."); return; }
     const updated = await customerQueries.update({ ...req.body, id: customerId });
     if (!updated) { res.status(404).send(`Failed to update customer with id: ${customerId}`); return; }
-    req.app.get("io").emit("customer:updated", updated);
+    req.app.get("io")?.emit("customer:updated", updated);
     res.redirect("/customers");
   } catch {
     res.status(500).send("Internal Server Error saving changes.");
@@ -54,7 +54,7 @@ export const getAddCustomer = async (_req: Request, res: Response): Promise<void
 export const postAddCustomer = async (req: Request, res: Response): Promise<void> => {
   try {
     const created = await customerQueries.create(req.body);
-    req.app.get("io").emit("customer:created", created);
+    req.app.get("io")?.emit("customer:created", created);
     res.redirect("/customers");
   } catch {
     res.status(500).send("Internal Server Error saving changes.");
@@ -64,6 +64,6 @@ export const postAddCustomer = async (req: Request, res: Response): Promise<void
 export const deleteCustomer = async (req: Request, res: Response): Promise<void> => {
   const customerId = parseInt(req.params.id as string, 10);
   await customerQueries.delete(customerId);
-  req.app.get("io").emit("customer:deleted", customerId);
+  req.app.get("io")?.emit("customer:deleted", customerId);
   res.redirect("/customers");
 };

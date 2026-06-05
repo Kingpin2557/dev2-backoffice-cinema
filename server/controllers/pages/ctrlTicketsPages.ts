@@ -36,7 +36,7 @@ export const postEditTicket = async (req: Request, res: Response): Promise<void>
     if (isNaN(ticketId)) { res.status(400).send("Invalid record identifier."); return; }
     const updated = await ticketQueries.update({ ...req.body, id: ticketId });
     if (!updated) { res.status(404).send(`Failed to update ticket with id: ${ticketId}`); return; }
-    req.app.get("io").emit("ticket:updated", updated);
+    req.app.get("io")?.emit("ticket:updated", updated);
     res.redirect("/tickets");
   } catch {
     res.status(500).send("Internal Server Error saving changes.");
@@ -54,7 +54,7 @@ export const getAddTicket = async (_req: Request, res: Response): Promise<void> 
 export const postAddTicket = async (req: Request, res: Response): Promise<void> => {
   try {
     const created = await ticketQueries.create(req.body);
-    req.app.get("io").emit("ticket:created", created);
+    req.app.get("io")?.emit("ticket:created", created);
     res.redirect("/tickets");
   } catch {
     res.status(500).send("Internal Server Error saving changes.");
@@ -64,6 +64,6 @@ export const postAddTicket = async (req: Request, res: Response): Promise<void> 
 export const deleteTicket = async (req: Request, res: Response): Promise<void> => {
   const ticketId = parseInt(req.params.id as string, 10);
   await ticketQueries.delete(ticketId);
-  req.app.get("io").emit("ticket:deleted", ticketId);
+  req.app.get("io")?.emit("ticket:deleted", ticketId);
   res.redirect("/tickets");
 };

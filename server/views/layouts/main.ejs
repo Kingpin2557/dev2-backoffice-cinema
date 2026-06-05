@@ -20,7 +20,6 @@
     <main class="main">
       <%- body %>
     </main>
-    <script src="/socket.io/socket.io.js"></script>
     <script>
       document.querySelectorAll('.c-modal').forEach(dialog => {
         dialog.addEventListener('close', () => {
@@ -29,13 +28,16 @@
         });
       });
 
-      const socket = io();
-
       let submitting = false;
 
       document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', () => submitting = true);
       });
+    </script>
+    <% if (!isProduction) { %>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
 
       const reloadOn = [
         'movie:created', 'movie:updated', 'movie:deleted',
@@ -47,5 +49,6 @@
         if (!submitting) location.reload();
       }));
     </script>
+    <% } %>
   </body>
 </html>

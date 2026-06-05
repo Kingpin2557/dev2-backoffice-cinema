@@ -34,7 +34,7 @@ export const getTicketById = async (_req: Request, res: Response): Promise<void>
 export const createTicket = async (req: Request, res: Response): Promise<void> => {
   try {
     const created = await ticketQueries.create(req.body);
-    req.app.get("io").emit("ticket:created", created);
+    req.app.get("io")?.emit("ticket:created", created);
     res.status(201).json(created);
   } catch {
     res.status(500).json({ error: "Internal server error" });
@@ -45,7 +45,7 @@ export const updateTicket = async (req: Request, res: Response): Promise<void> =
   try {
     const updated = await ticketQueries.update({ ...req.body, id: res.locals.numericId });
     if (!updated) { res.status(404).json({ error: "Ticket not found" }); return; }
-    req.app.get("io").emit("ticket:updated", updated);
+    req.app.get("io")?.emit("ticket:updated", updated);
     res.status(200).json(updated);
   } catch {
     res.status(500).json({ error: "Internal server error" });
@@ -56,7 +56,7 @@ export const deleteTicket = async (req: Request, res: Response): Promise<void> =
   try {
     const deleted = await ticketQueries.delete(res.locals.numericId);
     if (!deleted) { res.status(404).json({ error: "Ticket not found" }); return; }
-    req.app.get("io").emit("ticket:deleted", res.locals.numericId);
+    req.app.get("io")?.emit("ticket:deleted", res.locals.numericId);
     res.status(200).json(deleted);
   } catch {
     res.status(500).json({ error: "Internal server error" });

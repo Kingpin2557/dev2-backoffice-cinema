@@ -10,25 +10,26 @@ import { Server as SocketIOServer } from "socket.io";
 
 const app: Application = express();
 const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
+const isProduction: boolean = process.env.NODE_ENV === "production";
 
 const httpServer: HttpServer = createServer(app);
 
-const io: SocketIOServer = new SocketIOServer(httpServer, {
-  cors: {
-    origin: [
-      process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : `http://localhost:${PORT}`,
-    ],
-    credentials: true,
-  },
-});
+let io: SocketIOServer | undefined;
 
-app.set("io", io);
+if (!isProduction) {
+  io = new SocketIOServer(httpServer, {
+    cors: {
+      origin: `http://localhost:${PORT}`,
+      credentials: true,
+    },
+  });
 
-io.on("connection", (socket) => {
-  console.log(`User connected to real-time sync: ${socket.id}`);
-});
+  app.set("io", io);
+
+  io.on("connection", (socket) => {
+    console.log(`User connected to real-time sync: ${socket.id}`);
+  });
+}
 
 app.use(
   cors({
@@ -43,6 +44,7 @@ app.use(
 
 app.use((req, res, next) => {
   res.locals.path = req.path;
+  res.locals.isProduction = isProduction;
   next();
 });
 
@@ -59,6 +61,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", routes);
 
-httpServer.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+if (!isProduction) {
+  httpServer.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
+
+export default app;
