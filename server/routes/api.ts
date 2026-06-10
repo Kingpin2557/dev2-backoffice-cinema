@@ -1,57 +1,34 @@
 import express from "express";
 import {
-  getMovies,
-  getMovieById,
-  createMovie,
-  updateMovie,
-  deleteMovie,
-  getAllGenres,
-  getGenresForMovie,
-  getAllDates,
-  getDatesForMovie,
-  getLanguagesForMovie,
-  getFormatsForMovie,
+  getMovies, getMovieById, createMovie, updateMovie, deleteMovie,
+  getAllGenres, getGenresForMovie, getAllDates, getDatesForMovie,
+  getLanguagesForMovie, getSubtitlesForMovie, getFormatsForMovie,
 } from "../controllers/api/ctrlMoviesApi";
 import {
-  getCustomers,
-  getCustomerById,
-  createCustomer,
-  updateCustomer,
-  deleteCustomer,
+  getCustomers, getCustomerById, createCustomer, updateCustomer, deleteCustomer,
 } from "../controllers/api/ctrlCustomersApi";
 import {
-  getTickets,
-  getTicketById,
-  createTicket,
-  updateTicket,
-  deleteTicket,
+  getTickets, getTicketById, createTicket, updateTicket, deleteTicket,
 } from "../controllers/api/ctrlTicketsApi";
 import {
-  getShowtimes,
-  getShowtimeById,
-  createShowtime,
-  updateShowtime,
-  deleteShowtime,
-  getPlayingMovies,
-  getUniqueDates,
-  getShowtimesForMovie,
+  getShowtimes, getShowtimeById, createShowtime, updateShowtime, deleteShowtime,
+  getPlayingMovies, getUniqueDates, getShowtimesForMovie,
 } from "../controllers/api/ctrlShowtimesApi";
 import {
-  getSeatsForShowtime,
-  getLanguagesForRoom,
-  getFormatsForRoom,
+  getSeatsForShowtime, getLanguagesForRoom, getFormatsForRoom,
 } from "../controllers/api/ctrlRoomsApi";
 import { idValidation } from "../middleware/idValidation";
 
 const router = express.Router();
 
-// Movies - specific routes before /:id to avoid conflicts
+// Movies - specific routes before /:id
 router.get("/movie/genres", getAllGenres);
 router.get("/movie/dates", getAllDates);
 router.get("/movie", getMovies);
 router.get("/movie/:id/genres", getGenresForMovie);
 router.get("/movie/:id/dates", getDatesForMovie);
 router.get("/movie/:id/languages", getLanguagesForMovie);
+router.get("/movie/:id/subtitles", getSubtitlesForMovie);
 router.get("/movie/:id/formats", getFormatsForMovie);
 router.get("/movie/:id", idValidation, getMovieById);
 router.post("/movie", createMovie);
@@ -72,7 +49,7 @@ router.post("/ticket", createTicket);
 router.patch("/ticket/:id", idValidation, updateTicket);
 router.delete("/ticket/:id", idValidation, deleteTicket);
 
-// Showtimes - specific routes before /:id to avoid conflicts
+// Showtimes - specific routes before /:id
 router.get("/showtime/playing", getPlayingMovies);
 router.get("/showtime/dates", getUniqueDates);
 router.get("/showtime/movie/:movieId", getShowtimesForMovie);
@@ -82,7 +59,7 @@ router.post("/showtime", createShowtime);
 router.patch("/showtime/:id", idValidation, updateShowtime);
 router.delete("/showtime/:id", idValidation, deleteShowtime);
 
-// Rooms - specific routes before parameterized to avoid conflicts
+// Rooms
 router.get("/room/:id/languages", getLanguagesForRoom);
 router.get("/room/:id/formats", getFormatsForRoom);
 router.get("/room/:roomId/seats/:showtimeId", getSeatsForShowtime);

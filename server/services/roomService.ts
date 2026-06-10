@@ -10,8 +10,8 @@ export const roomQueries = {
   },
 
   async getLanguagesForRoom(roomId: number) {
-    const data = await sql<{ id: number; name: string; display: string }[]>`
-      SELECT DISTINCT l.id, l.name, l.display
+    const data = await sql<{ id: number; name: string }[]>`
+      SELECT DISTINCT l.id, l.name
       FROM languages l
       JOIN movie_languages ml ON ml."languageId" = l.id
       JOIN "Showtime" s ON s."movieId" = ml."movieId"

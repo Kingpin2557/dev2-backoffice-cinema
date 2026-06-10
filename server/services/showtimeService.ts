@@ -61,6 +61,8 @@ export const showtimeQueries = {
         m."trailerUrl",
         m.description,
         m."durationMinutes",
+        m.imbd_score,
+        m.age_limit,
         COALESCE(
           json_agg(DISTINCT g.name) FILTER (WHERE g.name IS NOT NULL),
           '[]'
@@ -69,18 +71,17 @@ export const showtimeQueries = {
           json_agg(DISTINCT DATE(s."startTime")::text) FILTER (WHERE s."startTime" IS NOT NULL),
           '[]'
         ) AS dates,
-        lang.name              AS language,
-        lang.display           AS "languageDisplay",
-        string_agg(DISTINCT sub.name, '/' ORDER BY sub.name) AS subtitles
+        string_agg(DISTINCT lang.name, ', ' ORDER BY lang.name) AS language,
+        string_agg(DISTINCT sub.name, '/' ORDER BY sub.name)    AS subtitles
       FROM "Movie" m
-      JOIN "Showtime" s          ON s."movieId"  = m.id
-      LEFT JOIN movie_genre mg   ON mg."movieId" = m.id
-      LEFT JOIN genres g         ON g.id         = mg."genreId"
-      LEFT JOIN movie_languages ml ON ml."movieId" = m.id
-      LEFT JOIN languages lang   ON lang.id       = ml."languageId"
-      LEFT JOIN movie_subtitles ms ON ms."movieId" = m.id
-      LEFT JOIN subtitles sub    ON sub.id         = ms."subtitleId"
-      GROUP BY m.id, lang.name, lang.display
+      JOIN "Showtime" s              ON s."movieId"  = m.id
+      LEFT JOIN movie_genre mg       ON mg."movieId" = m.id
+      LEFT JOIN genres g             ON g.id         = mg."genreId"
+      LEFT JOIN movie_languages ml   ON ml."movieId" = m.id
+      LEFT JOIN languages lang       ON lang.id      = ml."languageId"
+      LEFT JOIN movie_subtitles ms   ON ms."movieId" = m.id
+      LEFT JOIN subtitles sub        ON sub.id        = ms."subtitleId"
+      GROUP BY m.id
       ORDER BY m.id
     `;
     return data ?? [];
@@ -101,19 +102,19 @@ export const showtimeQueries = {
         s.id,
         s."startTime",
         s."endTime",
-        r.id            AS "roomId",
-        r.name          AS "roomName",
-        f.name          AS "formatName",
-        lang.name       AS language,
-        lang.display    AS "languageDisplay"
+        r.id   AS "roomId",
+        r.name AS "roomName",
+        f.name AS "formatName",
+        string_agg(DISTINCT lang.name, ', ' ORDER BY lang.name) AS language
       FROM "Showtime" s
-      JOIN "Room" r              ON r.id   = s."roomId"
-      LEFT JOIN formats f        ON f.id   = r."projectionFormatId"
+      JOIN "Room" r              ON r.id        = s."roomId"
+      LEFT JOIN formats f        ON f.id        = r."projectionFormatId"
       LEFT JOIN movie_languages ml ON ml."movieId" = s."movieId"
-      LEFT JOIN languages lang   ON lang.id = ml."languageId"
+      LEFT JOIN languages lang   ON lang.id     = ml."languageId"
       WHERE s."movieId" = ${movieId}
+      GROUP BY s.id, r.id, f.name
       ORDER BY r.id, s."startTime"
     `;
     return data ?? [];
   },
-};
+}

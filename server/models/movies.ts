@@ -6,6 +6,8 @@ export interface MovieProto extends Record<string, unknown> {
   trailerUrl: string;
   description: string;
   durationMinutes: number;
+  imbd_score: number | null;
+  age_limit: string | null;
 }
 
 export interface Movie extends MovieProto {

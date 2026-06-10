@@ -16,10 +16,11 @@ export interface PlayingMovie {
   trailerUrl: string;
   description: string;
   durationMinutes: number;
+  imbd_score: number | null;
+  age_limit: string | null;
   genres: string[];
   dates: string[];
   language: string;
-  languageDisplay: string;
   subtitles: string;
 }
 
@@ -31,5 +32,4 @@ export interface ShowtimeSlot {
   roomName: string;
   formatName: string;
   language: string;
-  languageDisplay: string;
 }

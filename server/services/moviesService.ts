@@ -18,8 +18,8 @@ export const movieQueries = {
 
   async create(data: MovieProto) {
     const [newMovie] = await sql<Movie[]>`
-      INSERT INTO "Movie" (title, "posterUrl", "trailerUrl", description, "durationMinutes")
-      VALUES (${data.title}, ${data.posterUrl}, ${data.trailerUrl}, ${data.description}, ${data.durationMinutes})
+      INSERT INTO "Movie" (title, "posterUrl", "trailerUrl", description, "durationMinutes", imbd_score, age_limit)
+      VALUES (${data.title}, ${data.posterUrl}, ${data.trailerUrl}, ${data.description}, ${data.durationMinutes}, ${data.imbd_score ?? null}, ${data.age_limit ?? null})
       RETURNING *
     `;
     return newMovie;
@@ -34,7 +34,9 @@ export const movieQueries = {
         "posterUrl" = COALESCE(${payload.posterUrl ?? null}, "posterUrl"),
         "trailerUrl" = COALESCE(${payload.trailerUrl ?? null}, "trailerUrl"),
         "description" = COALESCE(${payload.description ?? null}, "description"),
-        "durationMinutes" = COALESCE(${payload.durationMinutes ?? null}, "durationMinutes")
+        "durationMinutes" = COALESCE(${payload.durationMinutes ?? null}, "durationMinutes"),
+        imbd_score = COALESCE(${payload.imbd_score ?? null}, imbd_score),
+        age_limit = COALESCE(${payload.age_limit ?? null}, age_limit)
       WHERE id = ${id}
       RETURNING *
     `;
@@ -48,9 +50,7 @@ export const movieQueries = {
       await sql`DELETE FROM "movie_subtitles" WHERE "movieId" = ${id}`;
       await sql`DELETE FROM "movie_formats" WHERE "movieId" = ${id}`;
       await sql`DELETE FROM "Showtime" WHERE "movieId" = ${id}`;
-      const result = await sql<
-        Movie[]
-      >`DELETE FROM "Movie" WHERE id = ${id} RETURNING *`;
+      const result = await sql<Movie[]>`DELETE FROM "Movie" WHERE id = ${id} RETURNING *`;
       return result[0] ?? null;
     });
   },
@@ -112,12 +112,23 @@ export const movieQueries = {
   },
 
   async getLanguagesForMovie(movieId: number) {
-    const data = await sql<{ id: number; name: string; display: string }[]>`
-      SELECT l.id, l.name, l.display
+    const data = await sql<{ id: number; name: string }[]>`
+      SELECT l.id, l.name
       FROM languages l
       JOIN movie_languages ml ON ml."languageId" = l.id
       WHERE ml."movieId" = ${movieId}
       ORDER BY l.name
+    `;
+    return data ?? [];
+  },
+
+  async getSubtitlesForMovie(movieId: number) {
+    const data = await sql<{ id: number; name: string }[]>`
+      SELECT s.id, s.name
+      FROM subtitles s
+      JOIN movie_subtitles ms ON ms."subtitleId" = s.id
+      WHERE ms."movieId" = ${movieId}
+      ORDER BY s.name
     `;
     return data ?? [];
   },

@@ -14,7 +14,9 @@ export const getMovies = async (req: Request, res: Response): Promise<void> => {
     const totalPages = Math.max(1, Math.ceil(total / LIMIT));
     res.render("movies", { title: "Movies", movies, page, totalPages, error: null });
   } catch (err) {
-    res.render("movies", { title: "Movies", movies: [], page: 1, totalPages: 1, error: "Could not load movies. Please try again later." });
+    const detail = err instanceof Error ? err.message : String(err);
+    console.error("[getMovies]", detail);
+    res.render("movies", { title: "Movies", movies: [], page: 1, totalPages: 1, error: `DB error: ${detail}` });
   }
 };
 
@@ -25,8 +27,8 @@ export const getEditMovie = async (req: Request, res: Response): Promise<void> =
     const record = await movieQueries.get(movieId);
     if (!record) { res.status(404).send("The requested record could not be found."); return; }
     res.render("partials/_dynamic-form", { title: "Edit movie", record, actionPath: `/movies/${movieId}/edit` });
-  } catch {
-    res.status(500).send("Internal Server Error processing layout compilation.");
+  } catch (err) {
+    res.status(500).send("Internal Server Error: " + (err instanceof Error ? err.message : String(err)));
   }
 };
 
@@ -42,8 +44,8 @@ export const postEditMovie = async (req: Request, res: Response): Promise<void> 
     if (!updated) { res.status(404).send(`Failed to update movie with id: ${movieId}`); return; }
     req.app.get("io")?.emit("movie:updated", updated);
     res.redirect("/movies");
-  } catch {
-    res.status(500).send("Internal Server Error saving changes.");
+  } catch (err) {
+    res.status(500).send("Internal Server Error: " + (err instanceof Error ? err.message : String(err)));
   }
 };
 
@@ -63,8 +65,8 @@ export const postAddMovie = async (req: Request, res: Response): Promise<void> =
     });
     req.app.get("io")?.emit("movie:created", created);
     res.redirect("/movies");
-  } catch {
-    res.status(500).send("Internal Server Error saving changes.");
+  } catch (err) {
+    res.status(500).send("Internal Server Error: " + (err instanceof Error ? err.message : String(err)));
   }
 };
 
