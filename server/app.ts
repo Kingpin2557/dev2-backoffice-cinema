@@ -31,13 +31,16 @@ if (!isProduction) {
   });
 }
 
+const allowedOrigins = [
+  process.env.CORS_ORIGIN,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
+  `http://localhost:${PORT}`,
+  "http://localhost:5173",
+].filter(Boolean) as string[];
+
 app.use(
   cors({
-    origin: [
-      process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : `http://localhost:${PORT}`,
-    ],
+    origin: allowedOrigins,
     credentials: true,
   }),
 );
