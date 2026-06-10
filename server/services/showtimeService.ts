@@ -66,6 +66,10 @@ export const showtimeQueries = {
           json_agg(DISTINCT g.name) FILTER (WHERE g.name IS NOT NULL),
           '[]'
         ) AS genres,
+        COALESCE(
+          json_agg(DISTINCT DATE(s."startTime")::text) FILTER (WHERE s."startTime" IS NOT NULL),
+          '[]'
+        ) AS dates,
         lang.name              AS language,
         lang.display           AS "languageDisplay",
         string_agg(DISTINCT sub.name, '/' ORDER BY sub.name) AS subtitles

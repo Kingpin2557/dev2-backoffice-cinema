@@ -18,6 +18,7 @@ export interface PlayingMovie {
   description: string;
   durationMinutes: number;
   genres: string[];
+  dates: string[];
   language: string;
   languageDisplay: string;
   subtitles: string;
