@@ -5,17 +5,12 @@ import expressLayouts from "express-ejs-layouts";
 import path from "path";
 import routes from "./routes";
 
-import { createServer, Server as HttpServer } from "http";
-import { Server as SocketIOServer } from "socket.io";
-
 const app: Application = express();
 const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
 const isProduction: boolean = process.env.NODE_ENV === "production";
 
-const httpServer: HttpServer = createServer(app);
-
 // ==========================================
-// 1. CORS CONFIGURATION (MUST BE FIRST)
+// 1. CORS CONFIGURATION
 // ==========================================
 const allowedOrigins = [
   "https://zitplaatsreservatie-kiosk-kingpin25.vercel.app",
@@ -32,10 +27,7 @@ const corsOptions = {
   credentials: true,
 };
 
-// Apply CORS to all routes
 app.use(cors(corsOptions));
-
-// Handle HTTP preflight OPTIONS requests explicitly before routing matches
 app.options(
   "*",
   cors(corsOptions) as unknown as (
@@ -46,27 +38,7 @@ app.options(
 );
 
 // ==========================================
-// 2. SOCKET.IO REAL-TIME ROUTER SYNC
-// ==========================================
-let io: SocketIOServer | undefined;
-
-if (!isProduction) {
-  io = new SocketIOServer(httpServer, {
-    cors: {
-      origin: allowedOrigins,
-      credentials: true,
-    },
-  });
-
-  app.set("io", io);
-
-  io.on("connection", (socket) => {
-    console.log(`User connected to real-time sync: ${socket.id}`);
-  });
-}
-
-// ==========================================
-// 3. MIDDLEWARES & BODY PARSERS
+// 2. MIDDLEWARES & BODY PARSERS
 // ==========================================
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.path = req.path;
@@ -78,28 +50,49 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ==========================================
-// 4. VIEW ENGINE & STATIC CONTENT CONFIGS
+// 3. VIEW ENGINE & ABSOLUTE STATIC CONTENT CONFIGS
 // ==========================================
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+// Using process.cwd() guarantees accurate directory calculation inside Vercel containers
+app.set("views", path.join(process.cwd(), "server", "views"));
 
 app.use(expressLayouts);
 app.set("layout", "layouts/main");
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(process.cwd(), "public")));
 
 // ==========================================
-// 5. ROUTE ATTACHMENTS (MUST BE AFTER CORS)
+// 4. ROUTE ATTACHMENTS
 // ==========================================
 app.use("/", routes);
 
 // ==========================================
-// 6. SERVER LIFECYCLE EXECUTION
+// 5. LOCAL ENVIRONMENT ONLY (SOCKET.IO & LISTEN)
 // ==========================================
 if (!isProduction) {
-  httpServer.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+  // We dynamically load these modules locally so they never execute/crash on production Vercel servers
+  import("http").then(({ createServer }) => {
+    import("socket.io").then(({ Server: SocketIOServer }) => {
+      const httpServer = createServer(app);
+      const io = new SocketIOServer(httpServer, {
+        cors: {
+          origin: allowedOrigins,
+          credentials: true,
+        },
+      });
+
+      app.set("io", io);
+
+      io.on("connection", (socket) => {
+        console.log(`User connected to real-time sync: ${socket.id}`);
+      });
+
+      httpServer.listen(PORT, () => {
+        console.log(`Development Server running at http://localhost:${PORT}`);
+      });
+    });
   });
 }
 
+// Export the application raw for Vercel's serverless pipeline handler
 export default app;
