@@ -36,7 +36,11 @@ import {
   getUniqueDates,
   getShowtimesForMovie,
 } from "../controllers/api/ctrlShowtimesApi";
-import { getSeatsForShowtime, getLanguagesForRoom, getFormatsForRoom } from "../controllers/api/ctrlRoomsApi";
+import {
+  getSeatsForShowtime,
+  getLanguagesForRoom,
+  getFormatsForRoom,
+} from "../controllers/api/ctrlRoomsApi";
 import { idValidation } from "../middleware/idValidation";
 
 const router = express.Router();
@@ -68,7 +72,7 @@ router.post("/ticket", createTicket);
 router.patch("/ticket/:id", idValidation, updateTicket);
 router.delete("/ticket/:id", idValidation, deleteTicket);
 
-// Showtimes - specific routes must come before /:id to avoid conflicts
+// Showtimes - specific routes before /:id to avoid conflicts
 router.get("/showtime/playing", getPlayingMovies);
 router.get("/showtime/dates", getUniqueDates);
 router.get("/showtime/movie/:movieId", getShowtimesForMovie);

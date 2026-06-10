@@ -31,12 +31,6 @@ export const roomQueries = {
     return data ?? [];
   },
 
-  /**
-   * Returns every seat in a room with its reservation status for a
-   * specific showtime. A seat is considered reserved if:
-   *   - Seat.isReserved is true (permanently out of service), OR
-   *   - a Ticket already exists for that seat + showtime combination.
-   */
   async getSeatsForShowtime(roomId: number, showtimeId: number) {
     const data = await sql<SeatAvailability[]>`
       SELECT

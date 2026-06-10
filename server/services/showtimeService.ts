@@ -1,5 +1,10 @@
 import sql from "./db";
-import type { PlayingMovie, Showtime, ShowtimeSlot, ShowtimeProto } from "../models/showtimes";
+import type {
+  PlayingMovie,
+  Showtime,
+  ShowtimeSlot,
+  ShowtimeProto,
+} from "../models/showtimes";
 
 export const showtimeQueries = {
   async getAll() {
@@ -30,10 +35,10 @@ export const showtimeQueries = {
     const result = await sql<Showtime[]>`
       UPDATE "Showtime"
       SET
-        "roomId"    = COALESCE(${payload.roomId    ?? null}, "roomId"),
-        "movieId"   = COALESCE(${payload.movieId   ?? null}, "movieId"),
+        "roomId"    = COALESCE(${payload.roomId ?? null}, "roomId"),
+        "movieId"   = COALESCE(${payload.movieId ?? null}, "movieId"),
         "startTime" = COALESCE(${payload.startTime ?? null}, "startTime"),
-        "endTime"   = COALESCE(${payload.endTime   ?? null}, "endTime")
+        "endTime"   = COALESCE(${payload.endTime ?? null}, "endTime")
       WHERE id = ${id}
       RETURNING *
     `;
@@ -47,12 +52,6 @@ export const showtimeQueries = {
     return result[0] ?? null;
   },
 
-  // --- Kiosk endpoints ---
-
-  /**
-   * Returns every movie that has at least one showtime, enriched with
-   * genres, language and subtitles — ready for the MovieSelection view.
-   */
   async getPlayingMovies() {
     const data = await sql<PlayingMovie[]>`
       SELECT
@@ -74,7 +73,7 @@ export const showtimeQueries = {
         lang.display           AS "languageDisplay",
         string_agg(DISTINCT sub.name, '/' ORDER BY sub.name) AS subtitles
       FROM "Movie" m
-      JOIN "Showtime" s       ON s."movieId"  = m.id
+      JOIN "Showtime" s          ON s."movieId"  = m.id
       LEFT JOIN movie_genre mg   ON mg."movieId" = m.id
       LEFT JOIN genres g         ON g.id         = mg."genreId"
       LEFT JOIN movie_languages ml ON ml."movieId" = m.id
@@ -87,9 +86,6 @@ export const showtimeQueries = {
     return data ?? [];
   },
 
-  /**
-   * Returns the unique calendar dates on which any showtime occurs.
-   */
   async getUniqueDates() {
     const data = await sql<{ date: string }[]>`
       SELECT DISTINCT DATE("startTime")::text AS date
@@ -99,10 +95,6 @@ export const showtimeQueries = {
     return data ?? [];
   },
 
-  /**
-   * Returns every showtime for a given movie, enriched with room name
-   * and format — ready for the RoomSelection view.
-   */
   async getShowtimesForMovie(movieId: number) {
     const data = await sql<ShowtimeSlot[]>`
       SELECT
@@ -115,10 +107,10 @@ export const showtimeQueries = {
         lang.name       AS language,
         lang.display    AS "languageDisplay"
       FROM "Showtime" s
-      JOIN "Room" r          ON r.id   = s."roomId"
-      LEFT JOIN formats f    ON f.id   = r."projectionFormatId"
+      JOIN "Room" r              ON r.id   = s."roomId"
+      LEFT JOIN formats f        ON f.id   = r."projectionFormatId"
       LEFT JOIN movie_languages ml ON ml."movieId" = s."movieId"
-      LEFT JOIN languages lang     ON lang.id       = ml."languageId"
+      LEFT JOIN languages lang   ON lang.id = ml."languageId"
       WHERE s."movieId" = ${movieId}
       ORDER BY r.id, s."startTime"
     `;

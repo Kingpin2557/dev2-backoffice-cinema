@@ -9,7 +9,6 @@ export interface Showtime extends ShowtimeProto {
   id: number;
 }
 
-// Enriched shape returned by the kiosk endpoints
 export interface PlayingMovie {
   id: number;
   title: string;

@@ -74,8 +74,6 @@ export const movieQueries = {
     return data ?? [];
   },
 
-  // --- Kiosk lookup endpoints ---
-
   async getAllGenres() {
     const data = await sql<{ id: number; name: string }[]>`
       SELECT id, name FROM genres ORDER BY name
