@@ -5,6 +5,12 @@ import {
   createMovie,
   updateMovie,
   deleteMovie,
+  getAllGenres,
+  getGenresForMovie,
+  getAllDates,
+  getDatesForMovie,
+  getLanguagesForMovie,
+  getFormatsForMovie,
 } from "../controllers/api/ctrlMoviesApi";
 import {
   getCustomers,
@@ -30,13 +36,19 @@ import {
   getUniqueDates,
   getShowtimesForMovie,
 } from "../controllers/api/ctrlShowtimesApi";
-import { getSeatsForShowtime } from "../controllers/api/ctrlRoomsApi";
+import { getSeatsForShowtime, getLanguagesForRoom, getFormatsForRoom } from "../controllers/api/ctrlRoomsApi";
 import { idValidation } from "../middleware/idValidation";
 
 const router = express.Router();
 
-// Movies
+// Movies - specific routes before /:id to avoid conflicts
+router.get("/movie/genres", getAllGenres);
+router.get("/movie/dates", getAllDates);
 router.get("/movie", getMovies);
+router.get("/movie/:id/genres", getGenresForMovie);
+router.get("/movie/:id/dates", getDatesForMovie);
+router.get("/movie/:id/languages", getLanguagesForMovie);
+router.get("/movie/:id/formats", getFormatsForMovie);
 router.get("/movie/:id", idValidation, getMovieById);
 router.post("/movie", createMovie);
 router.patch("/movie/:id", idValidation, updateMovie);
@@ -66,7 +78,9 @@ router.post("/showtime", createShowtime);
 router.patch("/showtime/:id", idValidation, updateShowtime);
 router.delete("/showtime/:id", idValidation, deleteShowtime);
 
-// Rooms
+// Rooms - specific routes before parameterized to avoid conflicts
+router.get("/room/:id/languages", getLanguagesForRoom);
+router.get("/room/:id/formats", getFormatsForRoom);
 router.get("/room/:roomId/seats/:showtimeId", getSeatsForShowtime);
 
 export default router;

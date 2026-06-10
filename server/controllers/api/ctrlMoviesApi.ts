@@ -62,3 +62,79 @@ export const deleteMovie = async (req: Request, res: Response): Promise<void> =>
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+// --- Kiosk lookup endpoints ---
+
+export const getAllGenres = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const genres = await movieQueries.getAllGenres();
+    res.status(200).json(genres);
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getGenresForMovie = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const movieId = parseInt(req.params.id as string);
+    if (!Number.isInteger(movieId) || movieId <= 0) {
+      res.status(400).json({ error: "Invalid movie ID" });
+      return;
+    }
+    const genres = await movieQueries.getGenresForMovie(movieId);
+    res.status(200).json(genres);
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getAllDates = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const dates = await movieQueries.getAllDates();
+    res.status(200).json(dates);
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getDatesForMovie = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const movieId = parseInt(req.params.id as string);
+    if (!Number.isInteger(movieId) || movieId <= 0) {
+      res.status(400).json({ error: "Invalid movie ID" });
+      return;
+    }
+    const dates = await movieQueries.getDatesForMovie(movieId);
+    res.status(200).json(dates);
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getLanguagesForMovie = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const movieId = parseInt(req.params.id as string);
+    if (!Number.isInteger(movieId) || movieId <= 0) {
+      res.status(400).json({ error: "Invalid movie ID" });
+      return;
+    }
+    const languages = await movieQueries.getLanguagesForMovie(movieId);
+    res.status(200).json(languages);
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getFormatsForMovie = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const movieId = parseInt(req.params.id as string);
+    if (!Number.isInteger(movieId) || movieId <= 0) {
+      res.status(400).json({ error: "Invalid movie ID" });
+      return;
+    }
+    const formats = await movieQueries.getFormatsForMovie(movieId);
+    res.status(200).json(formats);
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

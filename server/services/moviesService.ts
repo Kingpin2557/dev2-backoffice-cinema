@@ -73,4 +73,66 @@ export const movieQueries = {
     `;
     return data ?? [];
   },
+
+  // --- Kiosk lookup endpoints ---
+
+  async getAllGenres() {
+    const data = await sql<{ id: number; name: string }[]>`
+      SELECT id, name FROM genres ORDER BY name
+    `;
+    return data ?? [];
+  },
+
+  async getGenresForMovie(movieId: number) {
+    const data = await sql<{ id: number; name: string }[]>`
+      SELECT g.id, g.name
+      FROM genres g
+      JOIN movie_genre mg ON mg."genreId" = g.id
+      WHERE mg."movieId" = ${movieId}
+      ORDER BY g.name
+    `;
+    return data ?? [];
+  },
+
+  async getAllDates() {
+    const data = await sql<{ date: string }[]>`
+      SELECT DISTINCT DATE("startTime")::text AS date
+      FROM "Showtime"
+      ORDER BY date
+    `;
+    return data ?? [];
+  },
+
+  async getDatesForMovie(movieId: number) {
+    const data = await sql<{ date: string }[]>`
+      SELECT DISTINCT DATE("startTime")::text AS date
+      FROM "Showtime"
+      WHERE "movieId" = ${movieId}
+      ORDER BY date
+    `;
+    return data ?? [];
+  },
+
+  async getLanguagesForMovie(movieId: number) {
+    const data = await sql<{ id: number; name: string; display: string }[]>`
+      SELECT l.id, l.name, l.display
+      FROM languages l
+      JOIN movie_languages ml ON ml."languageId" = l.id
+      WHERE ml."movieId" = ${movieId}
+      ORDER BY l.name
+    `;
+    return data ?? [];
+  },
+
+  async getFormatsForMovie(movieId: number) {
+    const data = await sql<{ id: number; name: string }[]>`
+      SELECT DISTINCT f.id, f.name
+      FROM formats f
+      JOIN "Room" r ON r."projectionFormatId" = f.id
+      JOIN "Showtime" s ON s."roomId" = r.id
+      WHERE s."movieId" = ${movieId}
+      ORDER BY f.name
+    `;
+    return data ?? [];
+  },
 };

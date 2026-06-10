@@ -9,6 +9,28 @@ export const roomQueries = {
     return data[0] ?? null;
   },
 
+  async getLanguagesForRoom(roomId: number) {
+    const data = await sql<{ id: number; name: string; display: string }[]>`
+      SELECT DISTINCT l.id, l.name, l.display
+      FROM languages l
+      JOIN movie_languages ml ON ml."languageId" = l.id
+      JOIN "Showtime" s ON s."movieId" = ml."movieId"
+      WHERE s."roomId" = ${roomId}
+      ORDER BY l.name
+    `;
+    return data ?? [];
+  },
+
+  async getFormatsForRoom(roomId: number) {
+    const data = await sql<{ id: number; name: string }[]>`
+      SELECT f.id, f.name
+      FROM formats f
+      JOIN "Room" r ON r."projectionFormatId" = f.id
+      WHERE r.id = ${roomId}
+    `;
+    return data ?? [];
+  },
+
   /**
    * Returns every seat in a room with its reservation status for a
    * specific showtime. A seat is considered reserved if:
