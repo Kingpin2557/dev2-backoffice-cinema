@@ -12,15 +12,12 @@ const isProduction: boolean = process.env.NODE_ENV === "production";
 // ==========================================
 // 1. CORS CONFIGURATION
 // ==========================================
-const allowedOrigins = [
-  "https://zitplaatsreservatie-kiosk-kingpin25.vercel.app",
-  process.env.CORS_ORIGIN?.replace(/\/$/, ""),
-  process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL.replace(/^https?:\/\//, "")}`
-    : null,
-  `http://localhost:${PORT}`,
-  "http://localhost:5173",
-].filter(Boolean) as string[];
+const allowedOrigins = isProduction
+  ? ([
+      "https://zitplaatsreservatie-kiosk-kingpin25.vercel.app",
+      process.env.CORS_ORIGIN?.replace(/\/$/, ""),
+    ].filter(Boolean) as string[])
+  : [`http://localhost:${PORT}`, "http://localhost:5173"];
 
 const corsOptions = {
   origin: allowedOrigins,
@@ -28,14 +25,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options(
-  "*",
-  cors(corsOptions) as unknown as (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => void,
-);
 
 // ==========================================
 // 2. MIDDLEWARES & BODY PARSERS
