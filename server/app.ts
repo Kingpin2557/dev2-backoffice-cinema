@@ -1,6 +1,6 @@
 import "dotenv/config";
 import cors from "cors";
-import express, { Application } from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
 import expressLayouts from "express-ejs-layouts";
 import path from "path";
 import routes from "./routes";
@@ -14,12 +14,46 @@ const isProduction: boolean = process.env.NODE_ENV === "production";
 
 const httpServer: HttpServer = createServer(app);
 
+// ==========================================
+// 1. CORS CONFIGURATION (MUST BE FIRST)
+// ==========================================
+const allowedOrigins = [
+  "https://zitplaatsreservatie-kiosk-kingpin25.vercel.app",
+  process.env.CORS_ORIGIN?.replace(/\/$/, ""),
+  process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL.replace(/^https?:\/\//, "")}`
+    : null,
+  `http://localhost:${PORT}`,
+  "http://localhost:5173",
+].filter(Boolean) as string[];
+
+const corsOptions = {
+  origin: allowedOrigins,
+  credentials: true,
+};
+
+// Apply CORS to all routes
+app.use(cors(corsOptions));
+
+// Handle HTTP preflight OPTIONS requests explicitly before routing matches
+app.options(
+  "*",
+  cors(corsOptions) as unknown as (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => void,
+);
+
+// ==========================================
+// 2. SOCKET.IO REAL-TIME ROUTER SYNC
+// ==========================================
 let io: SocketIOServer | undefined;
 
 if (!isProduction) {
   io = new SocketIOServer(httpServer, {
     cors: {
-      origin: `http://localhost:${PORT}`,
+      origin: allowedOrigins,
       credentials: true,
     },
   });
@@ -31,21 +65,10 @@ if (!isProduction) {
   });
 }
 
-const allowedOrigins = [
-  process.env.CORS_ORIGIN,
-  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
-  `http://localhost:${PORT}`,
-  "http://localhost:5173",
-].filter(Boolean) as string[];
-
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  }),
-);
-
-app.use((req, res, next) => {
+// ==========================================
+// 3. MIDDLEWARES & BODY PARSERS
+// ==========================================
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.path = req.path;
   res.locals.isProduction = isProduction;
   next();
@@ -54,6 +77,9 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ==========================================
+// 4. VIEW ENGINE & STATIC CONTENT CONFIGS
+// ==========================================
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -62,8 +88,14 @@ app.set("layout", "layouts/main");
 
 app.use(express.static(path.join(__dirname, "public")));
 
+// ==========================================
+// 5. ROUTE ATTACHMENTS (MUST BE AFTER CORS)
+// ==========================================
 app.use("/", routes);
 
+// ==========================================
+// 6. SERVER LIFECYCLE EXECUTION
+// ==========================================
 if (!isProduction) {
   httpServer.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
